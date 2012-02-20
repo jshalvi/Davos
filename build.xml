@@ -83,7 +83,7 @@
   <property name="exclude.pat"
             value="**/OLD/**,**/*-*/**,**/*~,**/*.bak" />
   <property name="src.include.pat"
-            value="build.*,Build.*,BUILD.*,${xtr.dir}/**/*,${src.app}/${resource.pat},${src.app}/**/*.java,${src.app}/**/*.Java,${src.app}/**/*.JAVA,${src.test}/**/*.java,${src.test}/**/*.Java,${src.test}/**/*.JAVA,${lib.dir}/**/*.jar" />
+            value="build.*,work_log.txt,Build.*,BUILD.*,${xtr.dir}/**/*,${src.app}/${resource.pat},${src.app}/**/*.java,${src.app}/**/*.Java,${src.app}/**/*.JAVA,${src.test}/**/*.java,${src.test}/**/*.Java,${src.test}/**/*.JAVA,${lib.dir}/**/*.jar" />
   <property name="src.exclude.pat"
             value="${bld.dir}/**,${exclude.pat},**/*.class,**/*.zip" />
 
