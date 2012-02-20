@@ -3,6 +3,8 @@ package com.shalvi.davos.http;
 public enum Method {
   GET ("GET"),
   HEAD ("HEAD"),
+  POST ("POST"),
+  DELETE ("DELETE"),
   UNSUPPORTED ("");
   
   private String name;
@@ -10,7 +12,7 @@ public enum Method {
     this.name = name;
   }
   
-  public String getName() {
+  public String toString() {
     return name;
   }
 }

@@ -2,14 +2,17 @@ package com.shalvi.davos.http;
 
 public class Request {
 
-  private String request;
+  private Method method;
   
-  public Request(String request) {
-    this.request = request;
+  public Request() {
+  }
+  
+  void setMethod(Method m) {
+    this.method = m;
   }
   
   public Method getMethod() {
-    return Method.UNSUPPORTED;
+    return method;
   }
   
   public String getRequestURI() {

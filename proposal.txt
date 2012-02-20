@@ -1,0 +1,98 @@
+SE450 - Winter 2012
+Project Proposal
+Jonathan Shalvi
+jshalvi@gmail.com
+
+For my final project, I plan to develop a basic web server framework and implement a simple server using this framework.  The framework will support a subset of the HTTP 1.1 standard, and will handle only static content.  If time allows, the framework will be extend to be an MVC web framework similar to Django or Rails.  The features are as follows:
+
+	The server shall listen listen for requests on a port specified at run time
+	The server shall support the following HTTP 1.1 requests: GET, POST, HEAD, and DELETE
+		GET requests will return the desired resource
+		POST requests will return the desired resource, with POST data logged in the console
+		HEAD requests will return headers and be logged to the console
+		DELETE requests will have no effect, but will be logged to the console
+	The server shall handle unsupported requests gracefully
+	The server shall support plain-text filetypes (html, txt, css, js)
+	The server shall support the JPEG filetype
+	The server shall support console logging
+	The server shall support a generic server configuration mechanism
+	The server shall support basic authentication
+	The server shall support cgi scripts
+	The server shall support cookies
+	The server shall support cookie-based sessions
+
+Optional (MVC web framework):
+
+	The server shall support configurable URL dispatching to client controllers
+	The server shall support client controllers
+	The server shall support processing of Mustache templates for views
+
+
+E-mail discussion:
+================================================================================
+
+Jagadeesan, Radha RJagadeesan@cs.depaul.edu
+10:31 AM (13 minutes ago)
+
+to me 
+Yes. I was thinking java.net<http://java.net>.  Project okayed.  Fine with me.
+
+On Feb 7, 2012, at 10:28 AM, "Jonathan Shalvi" <jshalvi@gmail.com<mailto:jshalvi@gmail.com>> wrote:
+
+Hi Radha,
+
+Is your estimate for the web server project based on the use of a networking package like java.net<http://java.net>?  I planned to do it without such a package and am surprised it can still be done in under 1500 lines.
+
+Either way, I also had an idea to make not just a server but a web MVC framework similar to Django or Rails.  The client programmer would configure a URL dispatcher, write controllers to handle specific requests, and write templates to output the view.  I would use a third-party library called Mustache to process templates.
+
+My revised proposal is below, please let me know what you think about the feature list, and the use of the java.net<http://java.net> package.
+
+Thanks,
+
+-Jonathan
+
+
+
+The server shall listen listen for requests on a port specified at run time
+The server shall support the following HTTP 1.1 requests: GET, POST, HEAD, and DELETE
+GET requests will return the desired resource
+POST requests will return the desired resource, with POST data logged in the console
+HEAD requests will return headers and be logged to the console
+DELETE requests will have no effect, but will be logged to the console
+The server shall handle unsupported requests gracefully
+The server shall support plain-text filetypes (html, txt, css, js)
+The server shall support the JPEG filetype
+The server shall support console logging
+The server shall support a generic server configuration mechanism
+The server shall support basic authentication
+The server shall support cgi scripts
+The server shall support cookies
+The server shall support cookie-based sessions
+
+Optional (MVC web framework):
+
+The server shall support configurable URL dispatching to client controllers
+The server shall support client controllers
+The server shall support processing of Mustache templates for views
+
+
+
+
+On Mon, Feb 6, 2012 at 10:25 PM, Jagadeesan, Radha <RJagadeesan@cs.depaul.edu<mailto:RJagadeesan@cs.depaul.edu>> wrote:
+Interesting idea as a project.  Needs both the suggested optional features (and others??) in order to make it of the scale needed to reach class project.  Great care needs to be taken to structure the code.  writing a dirty web server is too easy..
+
+________________________________
+From: Jonathan Shalvi [jshalvi@gmail.com<mailto:jshalvi@gmail.com>]
+
+
+Sent: Monday, February 06, 2012 4:39 PM
+To: Jagadeesan, Radha
+Subject: Project proposal submitted
+
+Hi Radha,
+
+I just submitted my project proposal via COL.  Please let me know if you have any comments or questions.
+
+Thanks,
+-Jonathan
+

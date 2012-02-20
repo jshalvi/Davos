@@ -1,8 +1,8 @@
 package com.shalvi.davos.http;
 
 public enum HTTPVersion {
-  VERSION_1_0 ("1.0"),
-  VERSION_1_1 ("1.1"),
+  VERSION_1_0 ("HTTP/1.0"),
+  VERSION_1_1 ("HTTP/1.1"),
   UNSUPPORTED ("");
   
   private String version;
