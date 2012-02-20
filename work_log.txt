@@ -1,0 +1,25 @@
+Jonathan Shalvi
+
+Feb 16, 2011
+===
+Jumped right in and set up the project.  Created an HTTP package to handle
+request parsing, and response construction.  Created the Request object, enum
+types for Request method and HTTP version.  I started some basic parsing, and
+am considering moving the job of parsing up into a static factory so the
+Request object can be immutable.
+
+02/16/2012 - Design: 	0:00
+02/16/2012 - Coding: 	1:00
+02/16/2012 - Bugs:		0:00
+
+
+Feb 20, 2011
+===
+Created a static RequestParser class which will parse an incoming request and
+return an immutable Request object.  Completed unit tests and implementation
+for parsing elements of the request line.  Next step is to parse the request
+line as a whole and to get started on the Response object.
+
+02/19/2012 - Design:	0:00
+02/19/2012 - Coding:	2:00
+02/19/2012 - Bugs:		0:00
