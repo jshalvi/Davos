@@ -1,34 +1,50 @@
 package com.shalvi.davos.http;
 
+import java.io.BufferedReader;
+import java.io.StringReader;
+
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
 
 public class RequestParserTEST extends TestCase {
 
+  private static String CRLF = "\r\n";
+  private static String RL_VALID_GET = "GET /pub/WWW/TheProject.html HTTP/1.1";
+  private static String RL_VALID_HEAD = "HEAD /pub/WWW/TheProject.html HTTP/1.1";
+  private static String RL_VALID_DELETE = "DELETE /pub/WWW/TheProject.html HTTP/1.1";
+  private static String RL_VALID_POST = "POST /pub/WWW/TheProject.html HTTP/1.1";
+  
+  private static String RL_BAD_METHOD = "GOT /pub/WWW/TheProject.html HTTP/1.1";
+  private static String RL_MISSING_METHOD = "/pub/WWW/TheProject.html HTTP/1.1";
+  
+  
+  private static String RL_BAD_HTTP_VERSION = "GET /pub/WWW/TheProject.html HTTP/0.1";
+  private static String RL_MISSING_HTTP_VERSION = "GET /pub/WWW/TheProject.html";
+  
   public void testParseMethod() {
     
-    Assert.assertEquals(Method.UNSUPPORTED, RequestParser.parseMethod(null));
-    Assert.assertEquals(Method.UNSUPPORTED, RequestParser.parseMethod(""));
-    Assert.assertEquals(Method.UNSUPPORTED, RequestParser.parseMethod("/pub/WWW/TheProject.html HTTP/1.1"));
-    Assert.assertEquals(Method.UNSUPPORTED, RequestParser.parseMethod("GOT /pub/WWW/TheProject.html HTTP/1.1"));
-    Assert.assertEquals(Method.UNSUPPORTED, RequestParser.parseMethod("/pub/WWW/TheProject.html GOT HTTP/1.1"));
+    Assert.assertEquals(RequestMethod.UNSUPPORTED, RequestParser.parseMethod(null));
+    Assert.assertEquals(RequestMethod.UNSUPPORTED, RequestParser.parseMethod(""));
+    Assert.assertEquals(RequestMethod.UNSUPPORTED, RequestParser.parseMethod("/pub/WWW/TheProject.html HTTP/1.1"));
+    Assert.assertEquals(RequestMethod.UNSUPPORTED, RequestParser.parseMethod("GOT /pub/WWW/TheProject.html HTTP/1.1"));
+    Assert.assertEquals(RequestMethod.UNSUPPORTED, RequestParser.parseMethod("/pub/WWW/TheProject.html GOT HTTP/1.1"));
     
-    Assert.assertEquals(Method.UNSUPPORTED, RequestParser.parseMethod(" GET /pub/WWW/TheProject.html HTTP/1.1"));    
-    Assert.assertEquals(Method.UNSUPPORTED, RequestParser.parseMethod("GETTER /pub/WWW/TheProject.html HTTP/1.1"));
-    Assert.assertEquals(Method.UNSUPPORTED, RequestParser.parseMethod("HEADER /pub/WWW/TheProject.html HTTP/1.1"));
-    Assert.assertEquals(Method.UNSUPPORTED, RequestParser.parseMethod("DELETER /pub/WWW/TheProject.html HTTP/1.1"));
-    Assert.assertEquals(Method.UNSUPPORTED, RequestParser.parseMethod("POSTER /pub/WWW/TheProject.html HTTP/1.1"));
+    Assert.assertEquals(RequestMethod.UNSUPPORTED, RequestParser.parseMethod(" GET /pub/WWW/TheProject.html HTTP/1.1"));    
+    Assert.assertEquals(RequestMethod.UNSUPPORTED, RequestParser.parseMethod("GETTER /pub/WWW/TheProject.html HTTP/1.1"));
+    Assert.assertEquals(RequestMethod.UNSUPPORTED, RequestParser.parseMethod("HEADER /pub/WWW/TheProject.html HTTP/1.1"));
+    Assert.assertEquals(RequestMethod.UNSUPPORTED, RequestParser.parseMethod("DELETER /pub/WWW/TheProject.html HTTP/1.1"));
+    Assert.assertEquals(RequestMethod.UNSUPPORTED, RequestParser.parseMethod("POSTER /pub/WWW/TheProject.html HTTP/1.1"));
 
-    Assert.assertEquals(Method.UNSUPPORTED, RequestParser.parseMethod("get /pub/WWW/TheProject.html HTTP/1.1"));
-    Assert.assertEquals(Method.UNSUPPORTED, RequestParser.parseMethod("head /pub/WWW/TheProject.html HTTP/1.1"));
-    Assert.assertEquals(Method.UNSUPPORTED, RequestParser.parseMethod("delete /pub/WWW/TheProject.html HTTP/1.1"));
-    Assert.assertEquals(Method.UNSUPPORTED, RequestParser.parseMethod("post /pub/WWW/TheProject.html HTTP/1.1"));
+    Assert.assertEquals(RequestMethod.UNSUPPORTED, RequestParser.parseMethod("get /pub/WWW/TheProject.html HTTP/1.1"));
+    Assert.assertEquals(RequestMethod.UNSUPPORTED, RequestParser.parseMethod("head /pub/WWW/TheProject.html HTTP/1.1"));
+    Assert.assertEquals(RequestMethod.UNSUPPORTED, RequestParser.parseMethod("delete /pub/WWW/TheProject.html HTTP/1.1"));
+    Assert.assertEquals(RequestMethod.UNSUPPORTED, RequestParser.parseMethod("post /pub/WWW/TheProject.html HTTP/1.1"));
     
-    Assert.assertEquals(Method.GET, RequestParser.parseMethod("GET /pub/WWW/TheProject.html HTTP/1.1"));
-    Assert.assertEquals(Method.HEAD, RequestParser.parseMethod("HEAD /pub/WWW/TheProject.html HTTP/1.1"));
-    Assert.assertEquals(Method.DELETE, RequestParser.parseMethod("DELETE /pub/WWW/TheProject.html HTTP/1.1"));
-    Assert.assertEquals(Method.POST, RequestParser.parseMethod("POST /pub/WWW/TheProject.html HTTP/1.1"));
+    Assert.assertEquals(RequestMethod.GET, RequestParser.parseMethod("GET /pub/WWW/TheProject.html HTTP/1.1"));
+    Assert.assertEquals(RequestMethod.HEAD, RequestParser.parseMethod("HEAD /pub/WWW/TheProject.html HTTP/1.1"));
+    Assert.assertEquals(RequestMethod.DELETE, RequestParser.parseMethod("DELETE /pub/WWW/TheProject.html HTTP/1.1"));
+    Assert.assertEquals(RequestMethod.POST, RequestParser.parseMethod("POST /pub/WWW/TheProject.html HTTP/1.1"));
   }
   
   public void testParseURILocator() {
@@ -49,4 +65,130 @@ public class RequestParserTEST extends TestCase {
     Assert.assertEquals(HTTPVersion.VERSION_1_0, RequestParser.parseHTTPVersion("GET /pub/WWW/TheProject.html HTTP/1.0"));
     Assert.assertEquals(HTTPVersion.VERSION_1_1, RequestParser.parseHTTPVersion("GET /pub/WWW/TheProject.html HTTP/1.1"));
   }
+  
+  public void testParseRequestLine() {
+    Request r;
+    
+    r = RequestParser.parseRequestLine("GET /pub/WWW/TheProject.html HTTP/1.1");
+    Assert.assertEquals(RequestMethod.GET, r.getMethod());
+    Assert.assertEquals("/pub/WWW/TheProject.html", r.getRequestURI());
+    Assert.assertEquals(HTTPVersion.VERSION_1_1, r.getHTTPVersion());
+    
+    r = RequestParser.parseRequestLine("POST / HTTP/1.0");
+    Assert.assertEquals(RequestMethod.POST, r.getMethod());
+    Assert.assertEquals("/", r.getRequestURI());
+    Assert.assertEquals(HTTPVersion.VERSION_1_0, r.getHTTPVersion());
+    
+    r = RequestParser.parseRequestLine("HEAD /pub/WWW/TheProject.html HTTP/1.1");
+    Assert.assertEquals(RequestMethod.HEAD, r.getMethod());
+    Assert.assertEquals("/pub/WWW/TheProject.html", r.getRequestURI());
+    Assert.assertEquals(HTTPVersion.VERSION_1_1, r.getHTTPVersion());
+    
+    r = RequestParser.parseRequestLine("DELETE /pub/WWW/TheProject.html HTTP/1.1");
+    Assert.assertEquals(RequestMethod.DELETE, r.getMethod());
+    Assert.assertEquals("/pub/WWW/TheProject.html", r.getRequestURI());
+    Assert.assertEquals(HTTPVersion.VERSION_1_1, r.getHTTPVersion());
+    
+    r = RequestParser.parseRequestLine("INVALID /pub/WWW/TheProject.html HTTP/1.1");
+    assertInvalidRequestLine(r);
+    
+    r = RequestParser.parseRequestLine("/pub/WWW/TheProject.html HTTP/1.1");
+    assertInvalidRequestLine(r);
+
+    r = RequestParser.parseRequestLine("GET HTTP/1.1");
+    assertInvalidRequestLine(r);
+    
+    r = RequestParser.parseRequestLine("GET /pub/WWW/TheProject.html HTTP/2.1");
+    assertInvalidRequestLine(r);
+    
+    r = RequestParser.parseRequestLine("GET /pub/WWW/TheProject.html");
+    assertInvalidRequestLine(r);
+    
+    r = RequestParser.parseRequestLine("");
+    assertInvalidRequestLine(r);
+    
+    r = RequestParser.parseRequestLine(null);
+    assertInvalidRequestLine(r);    
+  }
+  
+  private void assertInvalidRequestLine(Request r) {
+    Assert.assertEquals(RequestMethod.UNSUPPORTED, r.getMethod());
+    Assert.assertEquals("", r.getRequestURI());
+    Assert.assertEquals(HTTPVersion.UNSUPPORTED, r.getHTTPVersion());
+  }
+  
+  public void testReadLine() {
+    
+    String LINE1 = "GET /pub/WWW/TheProject.html HTTP/1.1",
+        SEPARATOR = "\r\n",
+        LINE2 = "test";
+    
+    // test line with \r or \n alone
+    
+    BufferedReader reader = new BufferedReader(new StringReader(LINE1 + SEPARATOR + LINE2));
+    Assert.assertEquals(LINE1, RequestParser.readLine(reader));
+    Assert.assertEquals(LINE2, RequestParser.readLine(reader));
+    Assert.assertNull(RequestParser.readLine(reader));
+    
+    reader = new BufferedReader(new StringReader(SEPARATOR));
+    Assert.assertEquals("", RequestParser.readLine(reader));
+    Assert.assertNull(RequestParser.readLine(reader));
+    
+    reader = new BufferedReader(new StringReader(""));
+    Assert.assertNull(RequestParser.readLine(reader));
+    
+    try {
+      RequestParser.readLine(null);
+      Assert.fail();
+    } catch (IllegalArgumentException e) {}
+  }
+  
+  public void testParseRequest() {
+    BufferedReader reader;
+    Request request;
+    
+    // Test valid requests
+    reader = new BufferedReader(new StringReader(RL_VALID_GET + CRLF + CRLF));
+    request = RequestParser.parseRequest(reader);
+    Assert.assertTrue(request.isValid());
+    Assert.assertEquals(RequestMethod.GET, request.getMethod());
+
+    reader = new BufferedReader(new StringReader(RL_VALID_HEAD + CRLF + CRLF));
+    request = RequestParser.parseRequest(reader);
+    Assert.assertTrue(request.isValid());
+    Assert.assertEquals(RequestMethod.HEAD, request.getMethod());
+
+    reader = new BufferedReader(new StringReader(RL_VALID_DELETE + CRLF + CRLF));
+    request = RequestParser.parseRequest(reader);
+    Assert.assertTrue(request.isValid());
+    Assert.assertEquals(RequestMethod.DELETE, request.getMethod());
+
+    reader = new BufferedReader(new StringReader(RL_VALID_POST + CRLF + CRLF));
+    request = RequestParser.parseRequest(reader);
+    Assert.assertTrue(request.isValid());
+    Assert.assertEquals(RequestMethod.POST, request.getMethod());
+
+    // Test bad request lines
+    reader = new BufferedReader(new StringReader(RL_BAD_METHOD + CRLF + CRLF));
+    request = RequestParser.parseRequest(reader);
+    Assert.assertFalse(request.isValid());
+
+    reader = new BufferedReader(new StringReader(RL_MISSING_METHOD + CRLF + CRLF));
+    request = RequestParser.parseRequest(reader);
+    Assert.assertFalse(request.isValid());
+
+    reader = new BufferedReader(new StringReader(RL_BAD_HTTP_VERSION + CRLF + CRLF));
+    request = RequestParser.parseRequest(reader);
+    Assert.assertFalse(request.isValid());
+
+    reader = new BufferedReader(new StringReader(RL_MISSING_HTTP_VERSION + CRLF + CRLF));
+    request = RequestParser.parseRequest(reader);
+    Assert.assertFalse(request.isValid());
+
+    // Test incomplete request
+    reader = new BufferedReader(new StringReader(RL_VALID_HEAD));
+    request = RequestParser.parseRequest(reader);
+    Assert.assertFalse(request.isValid());
+  }
+  
 }

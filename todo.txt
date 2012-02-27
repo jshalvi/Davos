@@ -1,3 +1,19 @@
 RequestFactory.parseRequest(request)
 
 Returns a request object
+
+02/25/2012
+===
+
+Parsing states
+
+begin
+request line
+headers
+blank
+body
+
+What should each parsing state do?
+	parse the buffer as necessary
+	return next state OR null when done
+

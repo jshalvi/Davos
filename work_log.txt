@@ -1,6 +1,6 @@
 Jonathan Shalvi
 
-Feb 16, 2011
+Feb 16, 2012
 ===
 Jumped right in and set up the project.  Created an HTTP package to handle
 request parsing, and response construction.  Created the Request object, enum
@@ -13,7 +13,7 @@ Request object can be immutable.
 02/16/2012 - Bugs:		0:00
 
 
-Feb 20, 2011
+Feb 20, 2012
 ===
 Created a static RequestParser class which will parse an incoming request and
 return an immutable Request object.  Completed unit tests and implementation
@@ -23,3 +23,12 @@ line as a whole and to get started on the Response object.
 02/19/2012 - Design:	0:00
 02/19/2012 - Coding:	2:00
 02/19/2012 - Bugs:		0:00
+
+
+Feb 22, 2012
+===
+Read up on basic networking in Java and wrote a very simple HTTP server as an exercise.  Spent an hour debugging an issue in which the client does not send a final CRLF, preventing the server from breaking its readLine loop.  After some research, I think this is as expected, since 
+
+02/19/2012 - Design:	0:30
+02/19/2012 - Coding:	0:30
+02/19/2012 - Bugs:		1:00

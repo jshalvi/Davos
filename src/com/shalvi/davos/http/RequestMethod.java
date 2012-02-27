@@ -1,6 +1,6 @@
 package com.shalvi.davos.http;
 
-public enum Method {
+public enum RequestMethod {
   GET ("GET"),
   HEAD ("HEAD"),
   POST ("POST"),
@@ -8,7 +8,7 @@ public enum Method {
   UNSUPPORTED ("");
   
   private String name;
-  Method(String name) {
+  RequestMethod(String name) {
     this.name = name;
   }
   

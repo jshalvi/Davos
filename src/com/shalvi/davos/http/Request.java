@@ -2,32 +2,54 @@ package com.shalvi.davos.http;
 
 public class Request {
 
-  private Method method;
+  private RequestMethod method;
+  private String uri;
+  private HTTPVersion version;
+  private boolean valid;
   
   public Request() {
+    method = RequestMethod.UNSUPPORTED;
+    uri = "";
+    version = HTTPVersion.UNSUPPORTED;
+    valid = false;
   }
   
-  void setMethod(Method m) {
-    this.method = m;
+  public Request(Request r) {
+    method = r.getMethod();
+    uri = r.getRequestURI();
+    version = r.getHTTPVersion();
+    valid = r.isValid();
   }
   
-  public Method getMethod() {
+  void setMethod(RequestMethod m) {
+    method = m;
+  }
+  
+  public RequestMethod getMethod() {
     return method;
   }
   
+  void setRequestURI(String s) {
+    uri = s;
+  }
+  
   public String getRequestURI() {
-    return null;
+    return uri;
+  }
+  
+  void setHTTPVersion(HTTPVersion v) {
+    version = v;
   }
   
   public HTTPVersion getHTTPVersion() {
-    return HTTPVersion.UNSUPPORTED;
+    return version;
   }
   
-  public boolean parse(String request) {
-    return false;
+  void setValid(boolean v) {
+    valid = v;
   }
   
   public boolean isValid() {
-    return false;
+    return valid;
   }
 }
