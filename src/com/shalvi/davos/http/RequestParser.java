@@ -24,7 +24,29 @@ enum ParserState {
     }
     
     public ParserState getNext() {
-      return END;
+      return REQUEST_HEADERS;
+    }
+  },
+  REQUEST_HEADERS() {
+    public Request parse(BufferedReader reader, Request request) {
+      Request r = new Request(request);
+      String line = RequestParser.readLine(reader);
+      
+      if (line == null) {
+        r.setValid(false);
+      } else {
+        while (line != null) {
+          if (line == "") {
+            break;
+          }
+          line = RequestParser.readLine(reader);
+        }
+      }
+      return r;
+    }
+    
+    public ParserState getNext() {
+      return null;
     }
   },
   END() {

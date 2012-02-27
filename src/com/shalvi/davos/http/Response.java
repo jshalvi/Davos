@@ -1,9 +1,12 @@
 package com.shalvi.davos.http;
 
+import java.io.BufferedReader;
+
 public class Response {
 
   private ResponseCode code;
   private String body;
+  private BufferedReader reader;
   
   public Response() {}
   
@@ -22,6 +25,12 @@ public class Response {
     return code;
   }
   
+  public void setReader(BufferedReader reader) {
+    this.reader = reader;
+  }
+  public BufferedReader getReader() {
+    return reader;
+  }
   public void setBody(String body) {
     this.body = body;
   }

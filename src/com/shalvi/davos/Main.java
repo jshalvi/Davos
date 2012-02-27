@@ -3,6 +3,8 @@ package com.shalvi.davos;
 import java.io.*;
 import java.net.*;
 
+import com.shalvi.davos.handler.RequestHandler;
+import com.shalvi.davos.handler.StaticFileRequestHandler;
 import com.shalvi.davos.http.Request;
 import com.shalvi.davos.http.Response;
 import com.shalvi.davos.http.RequestParser;
@@ -27,10 +29,20 @@ public class Main {
         reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         
         Request request = RequestParser.parseRequest(reader);
+        System.out.println(request.toString());
         Response response;
+        
         if (request.isValid()) {
-          response = new Response(ResponseCode.SUCCESS_200, "Hello, there!");
-          writer.print(response.toString());
+          
+          RequestHandler handler = new StaticFileRequestHandler();
+          response = handler.execute(request);
+          BufferedReader responseReader = response.getReader();
+          String line;
+          if (responseReader != null) {
+            while ((line = responseReader.readLine()) != null) {
+              writer.print(line);
+            }
+          }
         } else {
           response = new Response(ResponseCode.ERROR_404, "File not found, bro");
           writer.print(response.toString());

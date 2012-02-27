@@ -27,8 +27,35 @@ line as a whole and to get started on the Response object.
 
 Feb 22, 2012
 ===
-Read up on basic networking in Java and wrote a very simple HTTP server as an exercise.  Spent an hour debugging an issue in which the client does not send a final CRLF, preventing the server from breaking its readLine loop.  After some research, I think this is as expected, since 
+Read up on basic networking in Java and wrote a very simple HTTP server as an
+exercise.  Spent an hour debugging an issue in which the client does not send a
+final CRLF, preventing the server from breaking its readLine loop.  After some
+research, I realized I misunderstood the spec, and the socket is expected to
+stay open until the last CRLF is receieved, unless content-length is specified.
 
 02/19/2012 - Design:	0:30
 02/19/2012 - Coding:	0:30
 02/19/2012 - Bugs:		1:00
+
+Feb 26, 2012
+===
+Completed the request parser for the request line, which should be enough to
+bring up a basic server this weekend.
+
+
+02/19/2012 - Design:	0:00
+02/19/2012 - Coding:	2:00
+02/19/2012 - Bugs:		0:00
+
+
+Feb 27, 2012
+===
+Built out the response and static file request handler, and associated tests.
+Using these basic components I was able to succesfully start up a basic server
+which serves up static text content.
+
+02/19/2012 - Design:	0:30
+02/19/2012 - Coding:	3:30
+02/19/2012 - Bugs:		0:30
+
+

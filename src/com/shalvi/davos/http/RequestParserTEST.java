@@ -21,6 +21,7 @@ public class RequestParserTEST extends TestCase {
   
   private static String RL_BAD_HTTP_VERSION = "GET /pub/WWW/TheProject.html HTTP/0.1";
   private static String RL_MISSING_HTTP_VERSION = "GET /pub/WWW/TheProject.html";
+  private static String HEADER_LINE = "Content: all";
   
   public void testParseMethod() {
     
@@ -149,6 +150,14 @@ public class RequestParserTEST extends TestCase {
     
     // Test valid requests
     reader = new BufferedReader(new StringReader(RL_VALID_GET + CRLF + CRLF));
+    request = RequestParser.parseRequest(reader);
+    Assert.assertTrue(request.isValid());
+    Assert.assertEquals(RequestMethod.GET, request.getMethod());
+
+    reader = new BufferedReader(new StringReader(
+        RL_VALID_GET + CRLF + 
+        HEADER_LINE + CRLF +
+        CRLF));
     request = RequestParser.parseRequest(reader);
     Assert.assertTrue(request.isValid());
     Assert.assertEquals(RequestMethod.GET, request.getMethod());

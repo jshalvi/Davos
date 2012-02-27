@@ -17,3 +17,6 @@ What should each parsing state do?
 	parse the buffer as necessary
 	return next state OR null when done
 
+
+Does the default file redirect to index.html?  Sniff using HTTPFox
+Make responsebuilder callable only once

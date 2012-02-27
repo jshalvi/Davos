@@ -52,4 +52,8 @@ public class Request {
   public boolean isValid() {
     return valid;
   }
+  
+  public String toString() {
+    return "[" + method.toString() + " " + uri + "]";
+  }
 }
