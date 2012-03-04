@@ -24,6 +24,13 @@ line as a whole and to get started on the Response object.
 02/19/2012 - Coding:	2:00
 02/19/2012 - Bugs:		0:00
 
+Weekly summary
+================================================================================
+Design:	0:00
+Coding: 3:00
+Bugs:	0:00
+
+
 
 Feb 22, 2012
 ===
@@ -42,9 +49,8 @@ Feb 26, 2012
 Completed the request parser for the request line, which should be enough to
 bring up a basic server this weekend.
 
-
 02/19/2012 - Design:	0:00
-02/19/2012 - Coding:	2:00
+02/19/2012 - Coding:	3:00
 02/19/2012 - Bugs:		0:00
 
 
@@ -55,7 +61,14 @@ Using these basic components I was able to succesfully start up a basic server
 which serves up static text content.
 
 02/19/2012 - Design:	0:30
-02/19/2012 - Coding:	3:30
+02/19/2012 - Coding:	4:00
 02/19/2012 - Bugs:		0:30
+
+Weekly summary
+================================================================================
+Design:		1:00
+Coding:		7:30
+Bugs:		1:30
+
 
 

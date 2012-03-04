@@ -12,7 +12,21 @@ import com.shalvi.davos.http.ResponseCode;
 
 public class Main {
 
+  private static int DEFAULT_PORT = 1234;
+  private static String DEFAULT_ROOT_DIRECTORY = ".";
+  
   public static void main(String[] args) {
+    int port = DEFAULT_PORT;
+    String root_directory = DEFAULT_ROOT_DIRECTORY;
+    
+    for(int i = 0; i < args.length; i++) {
+      String key, val;
+      if ((key = args[i]) == "-p") {
+        
+      }
+      
+    }
+    
     System.out.println("Starting...");
     
     BufferedReader reader;
@@ -20,7 +34,7 @@ public class Main {
     
 
     try {
-      ServerSocket serverSocket = new ServerSocket(1948);
+      ServerSocket serverSocket = new ServerSocket(1948); // Catch port in use exception
 
       while(true) {
         Socket socket = serverSocket.accept();

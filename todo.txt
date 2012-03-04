@@ -20,3 +20,51 @@ What should each parsing state do?
 
 Does the default file redirect to index.html?  Sniff using HTTPFox
 Make responsebuilder callable only once
+
+02/27/2012
+	
+Release 3
+
+	The server shall listen listen for requests on a port specified at run time
+		specify port at run-time
+		specify htdocs at run-time
+
+	The server shall support console logging
+		Log GET
+		Log POST
+			parse headers, possible parser state reorg
+			parse POST
+		Log HEAD
+		Log DELETE
+
+	The server shall support the following HTTP 1.1 requests: GET, POST, HEAD, and DELETE
+		GET requests will return the desired resource
+		POST requests will return the desired resource, with POST data logged in the console
+		HEAD requests will return headers and be logged to the console
+		DELETE requests will have no effect, but will be logged to the console
+
+	x The server shall handle unsupported requests gracefully
+		x 404
+
+	The server shall support plain-text filetypes (html, txt, css, js) \
+		Dispatcher per filetype
+
+	The server shall support the JPEG filetype
+		Responses with MIME/type and content-length
+
+	The server shall support basic authentication
+	The server shall support cookies
+	The server shall support cookie-based sessions
+		serializable sessions (?)
+
+
+Release 4
+
+	The server shall support cgi scripts
+	The server shall support a generic server configuration mechanism
+
+Optional (MVC web framework):
+
+	The server shall support configurable URL dispatching to client controllers
+	The server shall support client controllers
+	The server shall support processing of Mustache templates for views

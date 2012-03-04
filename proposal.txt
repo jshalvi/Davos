@@ -3,7 +3,11 @@ Project Proposal
 Jonathan Shalvi
 jshalvi@gmail.com
 
-For my final project, I plan to develop a basic web server framework and implement a simple server using this framework.  The framework will support a subset of the HTTP 1.1 standard, and will handle only static content.  If time allows, the framework will be extend to be an MVC web framework similar to Django or Rails.  The features are as follows:
+For my final project, I plan to develop a basic web server framework and
+implement a simple server using this framework.  The framework will support a
+subset of the HTTP 1.1 standard, and will handle only static content.  If time
+allows, the framework will be extend to be an MVC web framework similar to
+Django or Rails.  The features are as follows:
 
 	The server shall listen listen for requests on a port specified at run time
 	The server shall support the following HTTP 1.1 requests: GET, POST, HEAD, and DELETE
