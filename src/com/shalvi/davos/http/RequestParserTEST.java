@@ -200,4 +200,82 @@ public class RequestParserTEST extends TestCase {
     Assert.assertFalse(request.isValid());
   }
   
+  private boolean validParameter(RequestParameterKey key, String value, String line) {
+      
+      RequestParameter param = RequestParser.parseRequestParameter(line);
+      
+      if (param.getKey() == key && param.getValue().compareTo(value) == 0) {
+          return true;
+      }
+
+      return false;
+  }
+  public void testParseParameter() {
+      
+      Assert.assertTrue(validParameter(
+              RequestParameterKey.HOST,
+              "www.mysite.com",
+              "Host: www.mysite.com"));
+      
+      Assert.assertTrue(validParameter(
+              RequestParameterKey.HOST,
+              "www.mysite.com",
+              "Host:www.mysite.com"));
+      Assert.assertTrue(validParameter(
+              RequestParameterKey.HOST,
+              "www.mysite.com",
+              "HOST: www.mysite.com"));
+      
+      Assert.assertTrue(validParameter(
+              RequestParameterKey.USER_AGENT, 
+              "Mozilla/4.0",
+              "User-Agent: Mozilla/4.0"));
+      
+      Assert.assertTrue(validParameter(
+              RequestParameterKey.CONTENT_LENGTH, 
+              "27",
+              "Content-Length: 27"));
+      
+      Assert.assertTrue(validParameter(
+              RequestParameterKey.CONTENT_TYPE,
+              "application/x-www-form-urlencoded",
+              "Content-Type: application/x-www-form-urlencoded"));
+      
+      RequestParameterKey unsupported = RequestParameterKey.UNSUPPORTED;
+      Assert.assertEquals(unsupported, RequestParser.parseRequestParameter("Force: strong").getKey());
+      Assert.assertEquals(unsupported, RequestParser.parseRequestParameter("Host:").getKey());
+      Assert.assertEquals(unsupported, RequestParser.parseRequestParameter("Host www.content-length").getKey());
+      Assert.assertEquals(unsupported, RequestParser.parseRequestParameter("").getKey());
+      Assert.assertEquals(unsupported, RequestParser.parseRequestParameter(null).getKey());
+  }
+  
+  public void testParsePost() {
+    /*
+     * 
+     * Sample request:
+     * 
+     * POST /login.jsp HTTP/1.1
+     * Host: www.mysite.com
+     * User-Agent: Mozilla/4.0
+     * Content-Length: 27
+     * Content-Type: application/x-www-form-urlencoded
+     * 
+     * userid=sforel&password=not2day
+     *
+     */
+      /*
+    String requestText = RL_VALID_POST + CRLF +
+      "Host: www.mysite.com" + CRLF +
+      "User-Agent: Mozilla/4.0" + CRLF +
+      "Content-Length: 27" + CRLF +
+      "Content-Type: application/x-www-form-urlencoded" + CRLF +
+      CRLF +
+      "userid=sforel&password=not2day" + CRLF +
+      CRLF;
+    
+    BufferedReader reader = new BufferedReader(new StringReader(requestText));
+    Request request = RequestParser.parseRequest(reader);
+    */
+    
+  }
 }

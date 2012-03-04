@@ -23,11 +23,11 @@ enum ParserState {
       return r;
     }
     
-    public ParserState getNext() {
-      return REQUEST_HEADERS;
+    public ParserState getNext(Request request) {
+      return REQUEST_PARAMS;
     }
   },
-  REQUEST_HEADERS() {
+  REQUEST_PARAMS() {
     public Request parse(BufferedReader reader, Request request) {
       Request r = new Request(request);
       String line = RequestParser.readLine(reader);
@@ -44,10 +44,20 @@ enum ParserState {
       }
       return r;
     }
-    
-    public ParserState getNext() {
+            
+    public ParserState getNext(Request request) {
       return null;
     }
+  },
+  REQUEST_POSTDATA() {
+    public Request parse(BufferedReader reader, Request request) {
+      return null;
+    }
+    
+    public ParserState getNext(Request request) {
+      return null;
+    }
+    
   },
   END() {
     public Request parse(BufferedReader reader, Request request) {
@@ -58,13 +68,13 @@ enum ParserState {
       return r;
     }
     
-    public ParserState getNext() {
+    public ParserState getNext(Request request) {
       return null;
     }
   };
   
   public abstract Request parse(BufferedReader reader, Request request);
-  public abstract ParserState getNext();
+  public abstract ParserState getNext(Request request);
 }
 
 public class RequestParser {
@@ -208,6 +218,31 @@ public class RequestParser {
     return request;
   }
   
+  static RequestParameter parseRequestParameter(String paramLine) {
+      RequestParameter param = new RequestParameter(RequestParameterKey.UNSUPPORTED, null);
+      
+      if (paramLine == null || paramLine.compareTo("") == 0) {
+          return param;
+      }
+      
+      String[] paramLineArr = paramLine.split(":");
+      if (paramLineArr.length != 2) {
+          return param;
+      }
+      
+      String paramLineKey = paramLineArr[0];
+      String paramLineVal = paramLineArr[1].trim();
+      
+      for (RequestParameterKey key : RequestParameterKey.values()) {
+          if (paramLineKey.compareToIgnoreCase(key.toString()) == 0) {
+              param = new RequestParameter(key, paramLineVal);
+              break;
+          }
+      }
+      
+      return param;
+  }
+  
   public static Request parseRequest(BufferedReader reader) {
     Request r = new Request();
     ParserState state = ParserState.REQUEST_LINE;
@@ -215,7 +250,7 @@ public class RequestParser {
     while (state != null) {
       r = state.parse(reader, r);
       if (r.isValid()) {
-        state = state.getNext();
+        state = state.getNext(r);
       } else {
         break;
       }
