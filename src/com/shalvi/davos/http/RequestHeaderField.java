@@ -1,16 +1,16 @@
 package com.shalvi.davos.http;
 
-public class RequestParameter {
+public class RequestHeaderField {
 
-    private RequestParameterKey key;
+    private RequestHeaderFieldName key;
     private String value;
     
-    RequestParameter(RequestParameterKey key, String value) {
+    RequestHeaderField(RequestHeaderFieldName key, String value) {
         this.key = key;
         this.value = value;
     }
     
-    public RequestParameterKey getKey() {
+    public RequestHeaderFieldName getKey() {
         return key;
     }
     

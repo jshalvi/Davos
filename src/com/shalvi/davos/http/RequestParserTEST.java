@@ -200,9 +200,9 @@ public class RequestParserTEST extends TestCase {
     Assert.assertFalse(request.isValid());
   }
   
-  private boolean validParameter(RequestParameterKey key, String value, String line) {
+  private boolean validParameter(RequestHeaderFieldName key, String value, String line) {
       
-      RequestParameter param = RequestParser.parseRequestParameter(line);
+      RequestHeaderField param = RequestParser.parseRequestParameter(line);
       
       if (param.getKey() == key && param.getValue().compareTo(value) == 0) {
           return true;
@@ -213,35 +213,35 @@ public class RequestParserTEST extends TestCase {
   public void testParseParameter() {
       
       Assert.assertTrue(validParameter(
-              RequestParameterKey.HOST,
+              RequestHeaderFieldName.HOST,
               "www.mysite.com",
               "Host: www.mysite.com"));
       
       Assert.assertTrue(validParameter(
-              RequestParameterKey.HOST,
+              RequestHeaderFieldName.HOST,
               "www.mysite.com",
               "Host:www.mysite.com"));
       Assert.assertTrue(validParameter(
-              RequestParameterKey.HOST,
+              RequestHeaderFieldName.HOST,
               "www.mysite.com",
               "HOST: www.mysite.com"));
       
       Assert.assertTrue(validParameter(
-              RequestParameterKey.USER_AGENT, 
+              RequestHeaderFieldName.USER_AGENT, 
               "Mozilla/4.0",
               "User-Agent: Mozilla/4.0"));
       
       Assert.assertTrue(validParameter(
-              RequestParameterKey.CONTENT_LENGTH, 
+              RequestHeaderFieldName.CONTENT_LENGTH, 
               "27",
               "Content-Length: 27"));
       
       Assert.assertTrue(validParameter(
-              RequestParameterKey.CONTENT_TYPE,
+              RequestHeaderFieldName.CONTENT_TYPE,
               "application/x-www-form-urlencoded",
               "Content-Type: application/x-www-form-urlencoded"));
       
-      RequestParameterKey unsupported = RequestParameterKey.UNSUPPORTED;
+      RequestHeaderFieldName unsupported = RequestHeaderFieldName.UNSUPPORTED;
       Assert.assertEquals(unsupported, RequestParser.parseRequestParameter("Force: strong").getKey());
       Assert.assertEquals(unsupported, RequestParser.parseRequestParameter("Host:").getKey());
       Assert.assertEquals(unsupported, RequestParser.parseRequestParameter("Host www.content-length").getKey());

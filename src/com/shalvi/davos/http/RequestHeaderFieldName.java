@@ -1,6 +1,6 @@
 package com.shalvi.davos.http;
 
-public enum RequestParameterKey {
+public enum RequestHeaderFieldName {
     HOST ("Host"),
     USER_AGENT ("User-Agent"),
     CONTENT_LENGTH ("Content-Length"),
@@ -9,7 +9,7 @@ public enum RequestParameterKey {
     
     private String name;
     
-    RequestParameterKey(String name) {
+    RequestHeaderFieldName(String name) {
         this.name = name;
     }
     

@@ -218,8 +218,8 @@ public class RequestParser {
     return request;
   }
   
-  static RequestParameter parseRequestParameter(String paramLine) {
-      RequestParameter param = new RequestParameter(RequestParameterKey.UNSUPPORTED, null);
+  static RequestHeaderField parseRequestParameter(String paramLine) {
+      RequestHeaderField param = new RequestHeaderField(RequestHeaderFieldName.UNSUPPORTED, null);
       
       if (paramLine == null || paramLine.compareTo("") == 0) {
           return param;
@@ -233,9 +233,9 @@ public class RequestParser {
       String paramLineKey = paramLineArr[0];
       String paramLineVal = paramLineArr[1].trim();
       
-      for (RequestParameterKey key : RequestParameterKey.values()) {
+      for (RequestHeaderFieldName key : RequestHeaderFieldName.values()) {
           if (paramLineKey.compareToIgnoreCase(key.toString()) == 0) {
-              param = new RequestParameter(key, paramLineVal);
+              param = new RequestHeaderField(key, paramLineVal);
               break;
           }
       }
