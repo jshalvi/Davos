@@ -25,12 +25,11 @@ Make responsebuilder callable only once
 	
 Release 3
 
-	The server shall listen listen for requests on a port specified at run time
+	x The server shall listen listen for requests on a port specified at run time
 		specify port at run-time
-		specify htdocs at run-time
 
 	The server shall support console logging
-		Log GET
+		x Log GET
 		Log POST
 			parse headers, possible parser state reorg
 			parse POST
@@ -60,6 +59,7 @@ Release 3
 
 Release 4
 
+	specify htdocs at run-time
 	The server shall support cgi scripts
 	The server shall support a generic server configuration mechanism
 

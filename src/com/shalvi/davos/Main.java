@@ -14,27 +14,36 @@ public class Main {
 
   private static int DEFAULT_PORT = 1234;
   private static String DEFAULT_ROOT_DIRECTORY = ".";
-  
+  private static String USAGE = "Usage: [-p port] [-l location_root]";
   public static void main(String[] args) {
     int port = DEFAULT_PORT;
     String root_directory = DEFAULT_ROOT_DIRECTORY;
+    CommandLineArguments cargs;
     
-    for(int i = 0; i < args.length; i++) {
-      String key, val;
-      if ((key = args[i]) == "-p") {
-        
-      }
-      
+    System.out.println(args[0]);
+    System.out.println("-p");
+    System.out.println(args[0] == "-p");
+    System.out.println("-p".compareTo(args[0]));
+
+    try {
+      cargs = new CommandLineArguments(args);
+    } catch (CommandLineArgumentsException e) {
+      System.out.println("1" + USAGE);
+      return;
     }
     
-    System.out.println("Starting...");
+    if (cargs.getPort() > 0) {
+      port = cargs.getPort();
+    }
+    
+    System.out.println("Starting on port " + port + "...");
     
     BufferedReader reader;
     PrintWriter writer;
     
 
     try {
-      ServerSocket serverSocket = new ServerSocket(1948); // Catch port in use exception
+      ServerSocket serverSocket = new ServerSocket(port);
 
       while(true) {
         Socket socket = serverSocket.accept();

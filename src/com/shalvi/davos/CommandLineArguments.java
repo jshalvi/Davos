@@ -8,13 +8,52 @@ package com.shalvi.davos;
  */
 public class CommandLineArguments {
 
+  private int port = -1;
+  private String rootDirectory;
   /**
    * Standard constructor.  Expects an array of strings which will be parsed upon
    * construction.
    * @throws CommandLineArgumentsException if an invalid argument was provided.
    */
   public CommandLineArguments(String[] args) throws CommandLineArgumentsException {
-    throw new CommandLineArgumentsException();
+    
+    String arg, value;
+    
+    if (args.length == 0) {
+      return;
+    }
+    
+    for (int i=0, inext=1; i < args.length; i++,inext++) {
+      arg = args[i];
+
+      if ("-p".compareTo(arg) == 0) {
+        if (inext >= args.length) {
+          throw new CommandLineArgumentsException();
+        }
+        
+        value = args[inext];
+        
+        try {
+          int p = Integer.parseInt(value);
+          port = p;
+          i++; inext++;
+        } catch (NumberFormatException e) {
+          throw new CommandLineArgumentsException();
+        }
+        
+      } else if ("-l".compareTo(arg) == 0) {
+        if (inext >= args.length) {
+          throw new CommandLineArgumentsException();
+        }
+
+        rootDirectory = args[inext];
+        i++; inext++;
+      } else {
+        // Unexpected or invalid option
+        throw new CommandLineArgumentsException();
+      }
+        
+    }
   }
   
   /**
@@ -22,7 +61,7 @@ public class CommandLineArguments {
    * @return -1 if argument was not provided, otherwise returns the desired port number.
    */
   public int getPort() {
-    return -1;
+    return port;
   }
   
   /**
@@ -30,6 +69,6 @@ public class CommandLineArguments {
    * @return null if the argument was not provided, otherwise returns the desired root directory.
    */
   public String getRootDirectory() {
-    return null;
+    return rootDirectory;
   }
 }
