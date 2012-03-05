@@ -48,6 +48,8 @@ Release 3
 	The server shall support plain-text filetypes (html, txt, css, js) \
 		Dispatcher per filetype
 
+--- Estimated release
+
 	The server shall support the JPEG filetype
 		Responses with MIME/type and content-length
 

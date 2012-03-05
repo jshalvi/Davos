@@ -219,7 +219,7 @@ public class RequestParser {
   }
   
   static RequestHeaderField parseRequestParameter(String paramLine) {
-      RequestHeaderField param = new RequestHeaderField(RequestHeaderFieldName.UNSUPPORTED, null);
+      RequestHeaderField param = new RequestHeaderField(RequestHeaderFieldName.UNSUPPORTED, "");
       
       if (paramLine == null || paramLine.compareTo("") == 0) {
           return param;

@@ -249,6 +249,46 @@ public class RequestParserTEST extends TestCase {
       Assert.assertEquals(unsupported, RequestParser.parseRequestParameter(null).getKey());
   }
   
+  public void testRequestHeaderField() {
+      
+      try {
+          new RequestHeaderField(null, "TEST");
+          Assert.fail();
+      } catch (IllegalArgumentException e) {}
+      
+      try {
+          new RequestHeaderField(RequestHeaderFieldName.HOST, null);
+          Assert.fail();
+      } catch (IllegalArgumentException e) {}
+      
+      
+      String userAgentVal = "Mozilla/4.0";
+      RequestHeaderFieldName userAgentKey = RequestHeaderFieldName.USER_AGENT;
+      String hostVal = "www.test.com";
+      RequestHeaderFieldName hostKey = RequestHeaderFieldName.HOST;
+
+      RequestHeaderField field = new RequestHeaderField(RequestHeaderFieldName.HOST, "www.test.com"),
+          field2 = new RequestHeaderField(hostKey, hostVal),
+          field3 = new RequestHeaderField(hostKey, new String(hostVal));
+      
+      Assert.assertEquals(RequestHeaderFieldName.HOST, field.getKey());
+      Assert.assertEquals("www.test.com", field.getValue());
+            
+      Assert.assertTrue(field.equals(field));
+      Assert.assertTrue(field.equals(field2));
+      Assert.assertTrue(field.equals(field3));
+      
+      Assert.assertFalse(field.equals(new RequestHeaderField(hostKey, userAgentVal)));
+      Assert.assertFalse(field.equals(new RequestHeaderField(userAgentKey, hostVal)));
+      Assert.assertFalse(field.equals(new Object()));
+      Assert.assertFalse(field.equals(null));
+      
+      Assert.assertEquals(field.hashCode(), field.hashCode());
+      Assert.assertEquals(field.hashCode(), field2.hashCode());
+      Assert.assertEquals(field.hashCode(), field3.hashCode());
+      
+      // test hashCode
+  }
   public void testParsePost() {
     /*
      * 

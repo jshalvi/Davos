@@ -1,5 +1,7 @@
 package com.shalvi.davos.http;
 
+import java.util.Map;
+
 /**
  * Represents an HTTP Request, providing information such as the Request Method (GET, POST, 
  * HEAD, DELETE), the request URI specifying the resource, and the HTTP version.  Request instances
@@ -14,6 +16,7 @@ public class Request {
   private String uri;
   private HTTPVersion version;
   private boolean valid;
+  private Map<RequestHeaderFieldName,RequestHeaderField> headerFields;
   
   /**
    * Standard constructor.  Initializes fields to empty, false or unsupported.
@@ -99,5 +102,13 @@ public class Request {
   
   public String toString() {
     return "[" + method.toString() + " " + uri + "]";
+  }
+  
+  public void addHeaderField(RequestHeaderField field) {
+      
+  }
+  
+  public RequestHeaderField getHeaderField(RequestHeaderFieldName key) {
+      return null;
   }
 }
