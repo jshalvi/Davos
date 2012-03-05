@@ -1,6 +1,26 @@
 RequestFactory.parseRequest(request)
 
 Returns a request object
+Patterns used:
+	State used in parsing
+	Strategy used in dispatcher
+	Strategy used in filetype dispatcher
+
+	discussed so far:
+		x Factory
+		Builder (tent.)
+		x Strategy
+		x State
+		Composition
+		Decorator
+		Flyweight
+		Proxy
+		Visitor
+		Observer
+		Singleton (not really discussed)
+
+	potential uses:
+	Singleton for config
 
 02/25/2012
 ===

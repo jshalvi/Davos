@@ -21,7 +21,7 @@ public class RequestParserTEST extends TestCase {
   
   private static String RL_BAD_HTTP_VERSION = "GET /pub/WWW/TheProject.html HTTP/0.1";
   private static String RL_MISSING_HTTP_VERSION = "GET /pub/WWW/TheProject.html";
-  private static String HEADER_LINE = "Content: all";
+  private static String HEADER_LINE = "Host: www.test.com";
   
   public void testParseMethod() {
     
@@ -202,7 +202,7 @@ public class RequestParserTEST extends TestCase {
   
   private boolean validParameter(RequestHeaderFieldName key, String value, String line) {
       
-      RequestHeaderField param = RequestParser.parseRequestParameter(line);
+      RequestHeaderField param = RequestParser.parseHeaderField(line);
       
       if (param.getKey() == key && param.getValue().compareTo(value) == 0) {
           return true;
@@ -242,11 +242,11 @@ public class RequestParserTEST extends TestCase {
               "Content-Type: application/x-www-form-urlencoded"));
       
       RequestHeaderFieldName unsupported = RequestHeaderFieldName.UNSUPPORTED;
-      Assert.assertEquals(unsupported, RequestParser.parseRequestParameter("Force: strong").getKey());
-      Assert.assertEquals(unsupported, RequestParser.parseRequestParameter("Host:").getKey());
-      Assert.assertEquals(unsupported, RequestParser.parseRequestParameter("Host www.content-length").getKey());
-      Assert.assertEquals(unsupported, RequestParser.parseRequestParameter("").getKey());
-      Assert.assertEquals(unsupported, RequestParser.parseRequestParameter(null).getKey());
+      Assert.assertEquals(unsupported, RequestParser.parseHeaderField("Force: strong").getKey());
+      Assert.assertEquals(unsupported, RequestParser.parseHeaderField("Host:").getKey());
+      Assert.assertEquals(unsupported, RequestParser.parseHeaderField("Host www.content-length").getKey());
+      Assert.assertEquals(unsupported, RequestParser.parseHeaderField("").getKey());
+      Assert.assertEquals(unsupported, RequestParser.parseHeaderField(null).getKey());
   }
   
   public void testRequestHeaderField() {
@@ -290,7 +290,18 @@ public class RequestParserTEST extends TestCase {
       // test hashCode
   }
   
-  public void testParsePost() {
+  private Request parseRequestText(String requestText) {
+      BufferedReader reader = new BufferedReader(new StringReader(requestText));
+      return RequestParser.parseRequest(reader);
+  }
+  
+  private void verifyHeaderField(Request request, RequestHeaderFieldName key, String value) {
+      RequestHeaderField field = request.getHeaderField(key);
+      Assert.assertEquals(key, field.getKey());
+      Assert.assertEquals(value, field.getValue());
+  }
+  
+  public void testParseHeaders() {
     /*
      * 
      * Sample request:
@@ -304,29 +315,42 @@ public class RequestParserTEST extends TestCase {
      * userid=sforel&password=not2day
      *
      */
-      /*
     String requestText = RL_VALID_POST + CRLF +
       "Host: www.mysite.com" + CRLF +
       "User-Agent: Mozilla/4.0" + CRLF +
-      "Content-Length: 27" + CRLF +
+      "Content-Length: 30" + CRLF +
       "Content-Type: application/x-www-form-urlencoded" + CRLF +
-      CRLF +
-      "userid=sforel&password=not2day" + CRLF +
       CRLF;
     
-    BufferedReader reader = new BufferedReader(new StringReader(requestText));
-    Request request = RequestParser.parseRequest(reader);
-    RequestHeaderField field;
+    Request request = parseRequestText(requestText);
     
-    // Verify we received a POST request
+    Assert.assertEquals(RequestMethod.POST, request.getMethod());
+    verifyHeaderField(request, RequestHeaderFieldName.HOST, "www.mysite.com");
+    verifyHeaderField(request, RequestHeaderFieldName.USER_AGENT, "Mozilla/4.0");
+    verifyHeaderField(request, RequestHeaderFieldName.CONTENT_LENGTH, "30");
+    verifyHeaderField(request, RequestHeaderFieldName.CONTENT_TYPE, "application/x-www-form-urlencoded");   
+     
+    requestText = RL_VALID_POST + CRLF +
+      "Host: www.mysite.com" + CRLF +
+      "User-Agent: Mozilla/4.0" + CRLF +
+      "User-Agent: Mozilla/4.0" + CRLF +
+      "Content-Length: 30" + CRLF +
+      "Content-Type: application/x-www-form-urlencoded" + CRLF +
+      CRLF;
+  
+    request = parseRequestText(requestText);
+    Assert.assertFalse(request.isValid());
+    
+    requestText = RL_VALID_GET + CRLF +
+      CRLF;
+
+    request = parseRequestText(requestText);
+    Assert.assertTrue(request.isValid());
     Assert.assertEquals(RequestMethod.GET, request.getMethod());
-    field = request.getHeaderField(RequestHeaderFieldName.USER_AGENT);
-    Assert.assertEquals(expected, actual)
-    */
-    // Verify user agent
-    // Verify content length
-    // Verify content type
-    // Verify POST data
-    
+
+  }
+  
+  public void testParseInvalidPost() {
+      
   }
 }

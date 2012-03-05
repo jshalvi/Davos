@@ -24,21 +24,34 @@ enum ParserState {
     }
     
     public ParserState getNext(Request request) {
-      return REQUEST_PARAMS;
+      return REQUEST_HEADERS;
     }
   },
-  REQUEST_PARAMS() {
+  REQUEST_HEADERS() {
     public Request parse(BufferedReader reader, Request request) {
       Request r = new Request(request);
       String line = RequestParser.readLine(reader);
+      RequestHeaderField field;
       
       if (line == null) {
+          
+        // We prematurely reached the end of a request
         r.setValid(false);
       } else {
         while (line != null) {
           if (line == "") {
             break;
           }
+          field = RequestParser.parseHeaderField(line);
+          
+          if (RequestHeaderFieldName.UNSPECIFIED != r.getHeaderField(field.getKey()).getKey()) {
+              r.setValid(false);
+              break;
+          }
+          if (RequestHeaderFieldName.UNSUPPORTED != field.getKey()) {
+              r.setHeaderField(RequestParser.parseHeaderField(line));
+          }
+          
           line = RequestParser.readLine(reader);
         }
       }
@@ -218,7 +231,7 @@ public class RequestParser {
     return request;
   }
   
-  static RequestHeaderField parseRequestParameter(String paramLine) {
+  static RequestHeaderField parseHeaderField(String paramLine) {
       RequestHeaderField param = new RequestHeaderField(RequestHeaderFieldName.UNSUPPORTED, "");
       
       if (paramLine == null || paramLine.compareTo("") == 0) {
