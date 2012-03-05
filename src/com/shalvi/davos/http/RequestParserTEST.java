@@ -348,9 +348,27 @@ public class RequestParserTEST extends TestCase {
     Assert.assertTrue(request.isValid());
     Assert.assertEquals(RequestMethod.GET, request.getMethod());
 
+    requestText = RL_VALID_GET + CRLF +
+        "Nonsense: blah/0.0" + CRLF +
+        CRLF;
+
+    request = parseRequestText(requestText);
+    Assert.assertTrue(request.isValid());
   }
   
   public void testParseInvalidPost() {
+      /*
+      String requestText = RL_VALID_POST + CRLF +
+          "Host: www.mysite.com" + CRLF +
+          "User-Agent: Mozilla/4.0" + CRLF +
+          "Content-Length: 30" + CRLF +
+          "Content-Type: application/x-www-form-urlencoded" + CRLF +
+          CRLF +
+          "userid=sforel&password=not2day" +
+          CRLF;
+
+      request = parseRequestText(requestText);
+       */
       
   }
 }

@@ -20,11 +20,6 @@ public class Main {
     String root_directory = DEFAULT_ROOT_DIRECTORY;
     CommandLineArguments cargs;
     
-    System.out.println(args[0]);
-    System.out.println("-p");
-    System.out.println(args[0] == "-p");
-    System.out.println("-p".compareTo(args[0]));
-
     try {
       cargs = new CommandLineArguments(args);
     } catch (CommandLineArgumentsException e) {
