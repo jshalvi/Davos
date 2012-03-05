@@ -19,11 +19,15 @@ public class MockRequestBuilder {
   public void setValid(boolean valid) {
     request.setValid(valid);
   }
+  public void setRequestHeaderField(RequestHeaderField field) {
+      request.setHeaderField(field);
+  }
   public void initializeDefaults() {
     setMethod(RequestMethod.GET);
     setRequestURI("/");
     setHTTPVersion(HTTPVersion.VERSION_1_1);
     setValid(true);
+    request.setHeaderField(new RequestHeaderField(RequestHeaderFieldName.HOST, "www.test.com"));
   }
   public Request toNewRequest() {
     return new Request(request);

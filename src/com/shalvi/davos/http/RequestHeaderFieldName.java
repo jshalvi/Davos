@@ -5,7 +5,8 @@ public enum RequestHeaderFieldName {
     USER_AGENT ("User-Agent"),
     CONTENT_LENGTH ("Content-Length"),
     CONTENT_TYPE ("Content-Type"),
-    UNSUPPORTED ("");
+    UNSUPPORTED (""),
+    UNSPECIFIED ("");
     
     private String name;
     

@@ -289,6 +289,7 @@ public class RequestParserTEST extends TestCase {
       
       // test hashCode
   }
+  
   public void testParsePost() {
     /*
      * 
@@ -315,7 +316,17 @@ public class RequestParserTEST extends TestCase {
     
     BufferedReader reader = new BufferedReader(new StringReader(requestText));
     Request request = RequestParser.parseRequest(reader);
+    RequestHeaderField field;
+    
+    // Verify we received a POST request
+    Assert.assertEquals(RequestMethod.GET, request.getMethod());
+    field = request.getHeaderField(RequestHeaderFieldName.USER_AGENT);
+    Assert.assertEquals(expected, actual)
     */
+    // Verify user agent
+    // Verify content length
+    // Verify content type
+    // Verify POST data
     
   }
 }

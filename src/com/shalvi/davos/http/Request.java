@@ -1,5 +1,6 @@
 package com.shalvi.davos.http;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -16,7 +17,9 @@ public class Request {
   private String uri;
   private HTTPVersion version;
   private boolean valid;
-  private Map<RequestHeaderFieldName,RequestHeaderField> headerFields;
+  
+  private Map<RequestHeaderFieldName,RequestHeaderField> headerFields = 
+      new HashMap<RequestHeaderFieldName, RequestHeaderField>();
   
   /**
    * Standard constructor.  Initializes fields to empty, false or unsupported.
@@ -31,12 +34,18 @@ public class Request {
   /**
    * Copy constructor.  Copies fields from specified Request object.
    * @param r object to copy.
+   * @throws IllegalArgumentException if request is null
    */
   public Request(Request r) {
-    method = r.getMethod();
-    uri = r.getRequestURI();
-    version = r.getHTTPVersion();
-    valid = r.isValid();
+      if (r == null) {
+          throw new IllegalArgumentException();
+      }
+      
+      method = r.getMethod();
+      uri = r.getRequestURI();
+      version = r.getHTTPVersion();
+      valid = r.isValid();
+      headerFields = r.getHeaderFields();
   }
   
   /**
@@ -104,11 +113,48 @@ public class Request {
     return "[" + method.toString() + " " + uri + "]";
   }
   
-  public void addHeaderField(RequestHeaderField field) {
+  /**
+   * Sets a header field.  If the field is already set, the old value will be overwritten.
+   * @param field
+   * @throws IllegalArgumentException if field is null
+   */
+  public void setHeaderField(RequestHeaderField field) {
+      if (field == null || 
+              field.getKey() == RequestHeaderFieldName.UNSPECIFIED || 
+              field.getKey() == RequestHeaderFieldName.UNSUPPORTED) {
+          throw new IllegalArgumentException();
+      }
       
+      headerFields.put(field.getKey(), field);
   }
   
   public RequestHeaderField getHeaderField(RequestHeaderFieldName key) {
-      return null;
+      if (key == null) {
+          throw new IllegalArgumentException();
+      }
+      
+      if (headerFields.containsKey(key)) {
+          return headerFields.get(key);
+      }
+      
+      return new RequestHeaderField(RequestHeaderFieldName.UNSPECIFIED, "");
+  }
+  
+  Map<RequestHeaderFieldName, RequestHeaderField> getHeaderFields() {
+      return new HashMap<RequestHeaderFieldName, RequestHeaderField>(headerFields);
+  }
+  
+  public boolean equals(Object thatObject) {
+      if(!(thatObject instanceof Request)) {
+          return false;
+      }
+      
+      Request that = (Request) thatObject;
+      
+      return method == that.getMethod() &&
+          uri.compareTo(that.getRequestURI()) == 0 &&
+          version == that.getHTTPVersion() &&
+          valid == that.isValid() &&
+          headerFields.equals(that.getHeaderFields());
   }
 }

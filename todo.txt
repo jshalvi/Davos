@@ -30,9 +30,8 @@ Release 3
 
 	The server shall support console logging
 		x Log GET
-		Log POST
-			parse headers, possible parser state reorg
-			parse POST
+	--> Log POST
+			parse POST test (possible parser state reorg)
 		Log HEAD
 		Log DELETE
 
@@ -44,6 +43,8 @@ Release 3
 
 	x The server shall handle unsupported requests gracefully
 		x 404
+
+	Design dispatcher and server
 
 	The server shall support plain-text filetypes (html, txt, css, js) \
 		Dispatcher per filetype

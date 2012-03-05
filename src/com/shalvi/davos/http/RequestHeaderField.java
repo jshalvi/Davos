@@ -38,7 +38,6 @@ class RequestHeaderField {
             result = 17;
             result = 31 * result + key.hashCode();
             result = 31 * result + value.hashCode();
-            
         }
         return result;
     }
