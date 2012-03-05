@@ -71,4 +71,46 @@ Coding:		7:30
 Bugs:		1:30
 
 
+Mar 2, 2012
+===
+Planned out and prioritized my work for the weekend.  Designed and started
+coding a command-line parser.  It's probably too much for my simple needs, but
+a good exercise in and of itself.
 
+03/02/2012 - Design:	1:00
+03/02/2012 - Coding:	0:30
+03/02/2012 - Bugs:		0:00
+
+
+Mar 3, 2012
+===
+Continued working on the command-line parser.  Spent a fair amount of time on a
+bug that could not be tested with a unit test.
+
+03/03/2012 - Design:	0:30
+03/03/2012 - Coding:	2:00
+03/03/2012 - Bugs:		0:30
+
+
+Mar 4, 2012
+===
+Built out the bulk of header parsing, which took much longer than anticipated.
+Unit tests are proving to be very time-consuming.  However, I spent no time on
+bugs worth measuring.
+
+03/04/2012 - Design:	0:30
+03/04/2012 - Coding:	7:30
+03/04/2012 - Bugs:		0:00
+
+Weekly summary
+================================================================================
+Design:		 2:00
+Coding:		10:00
+Bugs:		 0:30
+
+
+Cumulative summary
+================================================================================
+Design:		 3:00
+Coding:		20:30
+Bugs:		 2:00
