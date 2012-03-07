@@ -21,6 +21,8 @@ public class Request {
   private Map<RequestHeaderFieldName,RequestHeaderField> headerFields = 
       new HashMap<RequestHeaderFieldName, RequestHeaderField>();
   
+  private Map<String, String> postData = new HashMap<String, String>();
+  
   /**
    * Standard constructor.  Initializes fields to empty, false or unsupported.
    */
@@ -46,6 +48,7 @@ public class Request {
       version = r.getHTTPVersion();
       valid = r.isValid();
       headerFields = r.getHeaderFields();
+      postData = new HashMap<String, String>(r.postData);
   }
   
   /**
@@ -144,6 +147,34 @@ public class Request {
       return new HashMap<RequestHeaderFieldName, RequestHeaderField>(headerFields);
   }
   
+  /**
+   * Adds a postdata field to the request.
+   * @param key
+   * @param val
+   * @throws IllegalArgumentException if the key is empty or null, or the value is null
+   */
+  public void setPostdata(String key, String val) {
+      if (key == "" || key == null || val == null) {
+          throw new IllegalArgumentException();
+      }
+      
+      postData.put(key, val);
+  }
+  
+  /**
+   * Gets a postdata field from the request.
+   * @param key
+   * @return null if the key is not found, otherwise a string containing the postdata value.
+   * @throws IllegalArgumentException if key is null or empty.
+   */
+  public String getPostdata(String key) {
+      if (key == "" || key == null) {
+          throw new IllegalArgumentException();
+      }
+      
+      return postData.get(key);
+  }
+  
   public boolean equals(Object thatObject) {
       if(!(thatObject instanceof Request)) {
           return false;
@@ -155,6 +186,7 @@ public class Request {
           uri.compareTo(that.getRequestURI()) == 0 &&
           version == that.getHTTPVersion() &&
           valid == that.isValid() &&
-          headerFields.equals(that.getHeaderFields());
+          headerFields.equals(that.getHeaderFields()) &&
+          postData.equals(that.postData);
   }
 }

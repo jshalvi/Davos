@@ -61,6 +61,18 @@ public class RequestTEST extends TestCase {
         builder.initializeDefaults();
         builder.setRequestHeaderField(new RequestHeaderField(RequestHeaderFieldName.USER_AGENT, "Chrome/10.0"));
         Assert.assertFalse(request1.equals(builder.toNewRequest()));
+        
+        // Test POSTDATA equality
+        builder.initializeDefaults();
+        request1 = builder.toNewRequest();
+        request2 = builder.toNewRequest();
+        request2.setPostdata("testKey", "testVal2");
+        assertFalse(request1.equals(request2));
+        request1.setPostdata("testKey", "testVal");
+        request2.setPostdata("testKey", "testVal");
+        assertTrue(request1.equals(request2));
+        request2.setPostdata("testKey2", "testVal");
+        assertFalse(request1.equals(request2));
     }
     
     public void testHeaderField() {
@@ -99,6 +111,27 @@ public class RequestTEST extends TestCase {
         Assert.assertEquals(
                 RequestHeaderFieldName.UNSPECIFIED, 
                 request.getHeaderField(RequestHeaderFieldName.CONTENT_TYPE).getKey());
+    }
+    
+    private void assertPostdataException(String key, String val) {
+        Request r = new Request();
+        try {
+            r.setPostdata(key, val);
+            Assert.fail();
+        } catch( IllegalArgumentException e) {}
+    }
+    public void testPostdata() {
+        
+        assertPostdataException("", "test");
+        assertPostdataException(null, "test");
+        assertPostdataException("test", null);
+        
+        Request r = new Request();
+        assertNull(r.getPostdata("sdflksjdlfk"));
+        r.setPostdata("fox", "snow");
+        assertEquals("snow", r.getPostdata("fox"));
+        r.setPostdata("fox", "fire");
+        assertEquals("fire", r.getPostdata("fox"));
     }
     
 }

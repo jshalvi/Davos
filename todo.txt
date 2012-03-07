@@ -51,7 +51,13 @@ Release 3
 	The server shall support console logging
 		x Log GET
 	--> Log POST
+			x add postdata to request + new request
+			x modify equals
+			x modify request equals test
+			add parse postdata to parser + unit test
+			parse postdata
 			parse POST test (possible parser state reorg)
+			parse body (?)
 		Log HEAD
 		Log DELETE
 

@@ -2,6 +2,7 @@ package com.shalvi.davos.http;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
+import java.util.Map;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -354,6 +355,41 @@ public class RequestParserTEST extends TestCase {
 
     request = parseRequestText(requestText);
     Assert.assertTrue(request.isValid());
+  }
+  
+  public void testParsePostdata() {
+      Map<String, String> m;
+      
+      try {
+          RequestParser.parseUrlEncodedPostdata(null);
+          Assert.fail();
+          
+      } catch (IllegalArgumentException e) {}
+      
+      String[] INVALID_POSTDATA = {
+              "=sforel&password=not2day",
+              "username=password=not2day",
+              "username&password",
+              "&password=not2day",
+              "&"
+      };
+      
+      for (String s : INVALID_POSTDATA) {
+          m = RequestParser.parseUrlEncodedPostdata(s);
+          assertNull(s + " should be invalid.", m);
+      }
+      
+      m = RequestParser.parseUrlEncodedPostdata("userid=sforel&password=not2day");
+      assertEquals("sforel", m.get("userid"));
+      assertEquals("not2day", m.get("password"));
+      
+      m = RequestParser.parseUrlEncodedPostdata("username=sforel");
+      assertEquals("sforel", m.get("username"));
+      assertNull(m.get("password"));
+
+      m = RequestParser.parseUrlEncodedPostdata("username=&password=");
+      assertEquals("", m.get("username"));
+      assertEquals("", m.get("password"));
   }
   
   public void testParseInvalidPost() {

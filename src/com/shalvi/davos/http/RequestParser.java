@@ -2,6 +2,8 @@ package com.shalvi.davos.http;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 enum ParserState {
   REQUEST_LINE() {
@@ -229,6 +231,42 @@ public class RequestParser {
     }
 
     return request;
+  }
+  
+  /**
+   * Parses url-encoded postdata.
+   * @param line
+   * @return a new map whose postdata contains the parsed items, or null if the postdata was invalid.
+   */
+  static Map<String, String> parseUrlEncodedPostdata(String line) {
+      Map<String,String> m = new HashMap<String, String>();
+      
+      if (line == null) {
+          throw new IllegalArgumentException();
+      }
+      
+      if (line.length() ==0) {
+          return m;
+      }
+      
+      String[] entities = line.split("&"); // are html entities used?  probably not...
+      if (entities.length == 0) {
+          return null;
+      }
+      
+      for (String entity : entities) {
+          if (!entity.contains("=")) {
+              return null;
+          }
+          
+          String[] pair = entity.split("=");
+          if (pair.length > 2 || pair[0].length() == 0) {
+              return null;
+          }
+          m.put(pair[0], pair.length == 2 ? pair[1] : "");
+      }
+      
+      return m;
   }
   
   static RequestHeaderField parseHeaderField(String paramLine) {

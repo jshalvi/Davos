@@ -28,6 +28,7 @@ public class MockRequestBuilder {
     setHTTPVersion(HTTPVersion.VERSION_1_1);
     setValid(true);
     request.setHeaderField(new RequestHeaderField(RequestHeaderFieldName.HOST, "www.test.com"));
+    request.setPostdata("testKey", "testVal");
   }
   public Request toNewRequest() {
     return new Request(request);
