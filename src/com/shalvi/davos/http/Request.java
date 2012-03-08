@@ -175,6 +175,20 @@ public class Request {
       return postData.get(key);
   }
   
+  /**
+   * Returns the value of the Content-Length header.
+   * @return content-length, or zero if Content-Length was not specified.
+   */
+  public int getContentLength() {
+      int contentLen = 0;
+      
+      try {
+          contentLen = Integer.parseInt(getHeaderField(RequestHeaderFieldName.CONTENT_LENGTH).getValue());
+      } catch (NumberFormatException e) {}
+      
+      return contentLen;
+  }
+  
   public boolean equals(Object thatObject) {
       if(!(thatObject instanceof Request)) {
           return false;

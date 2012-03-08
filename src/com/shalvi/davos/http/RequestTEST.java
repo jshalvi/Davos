@@ -134,4 +134,21 @@ public class RequestTEST extends TestCase {
         assertEquals("fire", r.getPostdata("fox"));
     }
     
+    public void testGetContentLength() {
+        
+        Request request = new Request();
+        assertEquals(0, request.getContentLength());
+        
+        request.setHeaderField(new RequestHeaderField(RequestHeaderFieldName.CONTENT_LENGTH, "0"));
+        assertEquals(0, request.getContentLength());
+        
+        request.setHeaderField(new RequestHeaderField(RequestHeaderFieldName.CONTENT_LENGTH, "5"));
+        assertEquals(5, request.getContentLength());
+        
+        request.setHeaderField(new RequestHeaderField(RequestHeaderFieldName.CONTENT_LENGTH, ""));
+        assertEquals(0, request.getContentLength());
+
+        request.setHeaderField(new RequestHeaderField(RequestHeaderFieldName.CONTENT_LENGTH, "notanumber"));
+        assertEquals(0, request.getContentLength());
+    }
 }

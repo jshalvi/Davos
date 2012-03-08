@@ -392,19 +392,42 @@ public class RequestParserTEST extends TestCase {
       assertEquals("", m.get("password"));
   }
   
-  public void testParseInvalidPost() {
-      /*
+  public void testParsePost() {
       String requestText = RL_VALID_POST + CRLF +
           "Host: www.mysite.com" + CRLF +
           "User-Agent: Mozilla/4.0" + CRLF +
           "Content-Length: 30" + CRLF +
           "Content-Type: application/x-www-form-urlencoded" + CRLF +
           CRLF +
-          "userid=sforel&password=not2day" +
-          CRLF;
+          "userid=sforel&password=not2day";
 
+      Request request = parseRequestText(requestText);
+      assertEquals("sforel", request.getPostdata("userid"));
+      assertEquals("not2day", request.getPostdata("password"));
+      assertTrue(request.isValid());
+      
+      // Content-length over
+      requestText = RL_VALID_POST + CRLF +
+          "Host: www.mysite.com" + CRLF +
+          "User-Agent: Mozilla/4.0" + CRLF +
+          "Content-Length: 31" + CRLF +
+          "Content-Type: application/x-www-form-urlencoded" + CRLF +
+          CRLF +
+          "userid=sforel&password=not2day";
       request = parseRequestText(requestText);
-       */
+      assertFalse(request.isValid());
+
+      // Missing CRLF between headers and body
+      requestText = RL_VALID_POST + CRLF +
+          "Host: www.mysite.com" + CRLF +
+          "User-Agent: Mozilla/4.0" + CRLF +
+          "Content-Length: 31" + CRLF +
+          "Content-Type: application/x-www-form-urlencoded" + CRLF +
+          "userid=sforel&password=not2day";
+      request = parseRequestText(requestText);
+      assertFalse(request.isValid());
+
+
       
   }
 }

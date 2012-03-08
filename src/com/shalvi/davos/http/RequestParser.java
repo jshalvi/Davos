@@ -5,6 +5,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import sun.tools.tree.PostDecExpression;
+
+import com.sun.xml.internal.ws.transport.http.HttpMetadataPublisher;
+
 enum ParserState {
   REQUEST_LINE() {
     public Request parse(BufferedReader reader, Request request) {
@@ -61,12 +65,36 @@ enum ParserState {
     }
             
     public ParserState getNext(Request request) {
+        int len = request.getContentLength();
+      if (request.getMethod().equals(RequestMethod.POST) && len > 0) {
+          return REQUEST_POSTDATA;
+      }
       return null;
     }
   },
   REQUEST_POSTDATA() {
     public Request parse(BufferedReader reader, Request request) {
-      return null;
+        Request r = new Request(request);
+        String line = RequestParser.readLine(reader);
+        Map<String, String> postData;
+        
+        if (line == null || line.length() != r.getContentLength()) {
+            r.setValid(false);
+            return r;
+        }
+        
+        try {
+            postData = RequestParser.parseUrlEncodedPostdata(line);
+        } catch (IllegalArgumentException e) {
+            r.setValid(false);
+            return r;
+        }
+        
+        for (String key : postData.keySet()) {
+            r.setPostdata(key, postData.get(key));
+        }
+        
+        return r;
     }
     
     public ParserState getNext(Request request) {
