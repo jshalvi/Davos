@@ -54,12 +54,15 @@ Release 3
 			x add postdata to request + new request
 			x modify equals
 			x modify request equals test
-			add parse postdata to parser + unit test
-			parse postdata
+			x add parse postdata line to parser + unit test
+			x parse postdata
 			parse POST test (possible parser state reorg)
 			parse body (?)
 		Log HEAD
 		Log DELETE
+
+	The server shall support the JPEG filetype
+		Responses with MIME/type and content-length
 
 	The server shall support the following HTTP 1.1 requests: GET, POST, HEAD, and DELETE
 		GET requests will return the desired resource
@@ -75,15 +78,13 @@ Release 3
 	The server shall support plain-text filetypes (html, txt, css, js) \
 		Dispatcher per filetype
 
---- Estimated release
-
-	The server shall support the JPEG filetype
-		Responses with MIME/type and content-length
-
 	The server shall support basic authentication
 	The server shall support cookies
 	The server shall support cookie-based sessions
 		serializable sessions (?)
+
+	specific content-type support
+	is copying the request object really necessary?
 
 
 Release 4

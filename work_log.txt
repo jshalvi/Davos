@@ -114,3 +114,26 @@ Cumulative summary
 Design:		 3:00
 Coding:		20:30
 Bugs:		 2:00
+
+
+Mar 6, 2012
+================================================================================
+Began work on postdata support.  Added necessary data structures, unit tests,
+and parsing method to grab a url-encoded postdata from the request body.
+
+03/08/2012 - Design:	0:00
+03/08/2012 - Coding:	2:00
+03/08/2012 - Bugs:		0:00
+
+Mar 7, 2012
+================================================================================
+Spent a fair amount of time reading about HTTP message formats to ensure my
+design is on track.  Added a getter for request content length and completed
+post parsing.  I accidentally starting using postdata rather than headers to
+determine the next parsing state.  Honestly I'm getting turned around
+completely in my own project!  After correcting this mistake, all my unit tests
+passed!
+
+03/08/2012 - Design:	1:00
+03/08/2012 - Coding:	1:00
+03/08/2012 - Bugs:		0:30
