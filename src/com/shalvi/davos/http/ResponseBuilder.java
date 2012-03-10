@@ -13,9 +13,6 @@ public class ResponseBuilder {
   public void setResponseCode(ResponseCode code) {
     response.setResponseCode(code);
   }
-  public void setBody(String body) {
-    response.setBody(body);
-  }
   public void setReader(BufferedReader reader) {
     response.setReader(reader);
   }

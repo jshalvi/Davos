@@ -50,18 +50,40 @@ Release 3
 
 	The server shall support console logging
 		x Log GET
-	--> Log POST
+		x Log POST
 			x add postdata to request + new request
 			x modify equals
 			x modify request equals test
 			x add parse postdata line to parser + unit test
 			x parse postdata
-			parse POST test (possible parser state reorg)
-			parse body (?)
-		Log HEAD
-		Log DELETE
+			x parse POST test (possible parser state reorg)
+			x parse body (?)
+			Request.toString();
+			
+		x Log HEAD
+		x Log DELETE
+
+	x The server shall handle unsupported requests gracefully
+		x 404
+
+	x Design dispatcher and server
+
+	Response.toString()
+
+	Build Server
+		Server
+			setPort
+			setRootDirectory
+			run
+			stop
+	Build dispatcher
+	Build Handler interface
+
+	The server shall support plain-text filetypes (html, txt, css, js) \
+		Dispatcher per filetype
 
 	The server shall support the JPEG filetype
+		give a quick try
 		Responses with MIME/type and content-length
 
 	The server shall support the following HTTP 1.1 requests: GET, POST, HEAD, and DELETE
@@ -70,21 +92,29 @@ Release 3
 		HEAD requests will return headers and be logged to the console
 		DELETE requests will have no effect, but will be logged to the console
 
-	x The server shall handle unsupported requests gracefully
-		x 404
-
-	Design dispatcher and server
-
-	The server shall support plain-text filetypes (html, txt, css, js) \
-		Dispatcher per filetype
-
-	The server shall support basic authentication
+	Build cookie parsing
+	Set cookies in response
 	The server shall support cookies
+
+	Build session
+		id
+		Map
+
+	Build session manager
+		cache
+		getSession(id)
+		storeSession()
+
+		shutdown // write all sessions to disk
+		initSessionStore
+
+
 	The server shall support cookie-based sessions
 		serializable sessions (?)
 
+	The server shall support basic authentication
+
 	specific content-type support
-	is copying the request object really necessary?
 
 
 Release 4

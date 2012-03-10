@@ -32,7 +32,7 @@ public class StaticFileRequestHandler implements RequestHandler {
       builder.setReader(reader);
     } catch (FileNotFoundException e) {
       builder.setResponseCode(ResponseCode.ERROR_404);
-      builder.setBody(ResponseCode.ERROR_404.getReasonPhrase());
+      // builder.setBody(ResponseCode.ERROR_404.getReasonPhrase());
     }
     
     return builder.toResponse();      

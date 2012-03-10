@@ -134,7 +134,7 @@ public class Request extends Message {
   }
   
   public String toString() {
-      String startLine="", headers = "", postdata="";
+      String startLine="", postdata="";
       
       startLine =  "[" + method.toString() + " " + uri + " " + version.toString() + "]\n";
       
@@ -142,12 +142,8 @@ public class Request extends Message {
           postdata += "\t" + e.getKey() + "=" + e.getValue() + "\n";
       }
       
-      for (Map.Entry<HeaderFieldName, HeaderField> h : headerFields.entrySet()) {
-          headers += "\t" + h.getValue().toString() + "\n";
-      }
-      
       String out = startLine;
-      out += headers.length() > 0 ? "Headers:\n" + headers : "";
+      out += headersToString();
       out += postdata.length() > 0 ? "Postdata:\n" + postdata : "";
       return out;
   }

@@ -10,7 +10,7 @@ import sun.tools.tree.PostDecExpression;
 import com.sun.xml.internal.ws.transport.http.HttpMetadataPublisher;
 
 enum ParserState {
-  REQUEST_LINE() {
+  START_LINE() {
     public Request parse(BufferedReader reader, Request request) {
       Request r = new Request(request);
       Request rParsed;
@@ -69,21 +69,32 @@ enum ParserState {
       if (request.getMethod().equals(RequestMethod.POST) && len > 0) {
           return REQUEST_POSTDATA;
       }
-      return null;
+      return END;
     }
   },
   REQUEST_POSTDATA() {
     public Request parse(BufferedReader reader, Request request) {
         Request r = new Request(request);
-        String line = RequestParser.readLine(reader);
         Map<String, String> postData;
+
+        char[] cbuf = new char[request.getContentLength()];
+        int rStatus;
         
-        if (line == null || line.length() != r.getContentLength()) {
+        try {
+            rStatus = reader.read(cbuf, 0, request.getContentLength());
+        } catch (IOException e) {
+            r.setValid(false);
+            return r;
+        }
+        
+        
+        if (rStatus <= 0 || rStatus != r.getContentLength()) {
             r.setValid(false);
             return r;
         }
         
         try {
+            String line = new String(cbuf);
             postData = RequestParser.parseUrlEncodedPostdata(line);
         } catch (IllegalArgumentException e) {
             r.setValid(false);
@@ -98,16 +109,13 @@ enum ParserState {
     }
     
     public ParserState getNext(Request request) {
-      return null;
+      return END;
     }
     
   },
   END() {
     public Request parse(BufferedReader reader, Request request) {
       Request r = new Request(request);
-      String line = RequestParser.readLine(reader);
-
-      r.setValid(line == "");
       return r;
     }
     
@@ -324,9 +332,9 @@ public class RequestParser {
   
   public static Request parseRequest(BufferedReader reader) {
     Request r = new Request();
-    ParserState state = ParserState.REQUEST_LINE;
+    ParserState state = ParserState.START_LINE;
     
-    while (state != null) {
+    while (state != ParserState.END) {
       r = state.parse(reader, r);
       if (r.isValid()) {
         state = state.getNext(r);

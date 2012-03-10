@@ -5,8 +5,9 @@ import java.io.BufferedReader;
 public class Response extends Message {
 
   private ResponseCode code;
-  private String body;
   private BufferedReader reader;
+  private int contentLength = -1;
+  private HTTPVersion version;
   
   public Response() {}
   
@@ -15,7 +16,6 @@ public class Response extends Message {
   }
   public Response(ResponseCode code, String body) {
     this.code = code;
-    this.body = body;
   }
   public void setResponseCode(ResponseCode code) {
     this.code = code;
@@ -31,18 +31,50 @@ public class Response extends Message {
   public BufferedReader getReader() {
     return reader;
   }
-  public void setBody(String body) {
-    this.body = body;
+
+  /**
+   * Sets the content length of the response of the response.  This will set the Content-Length header
+   * accordingly.  If length <= 0, the header field will be cleared.
+   * @param length
+   */
+  public void setContentLength(int length) {
+      if (length <= 0) {
+          throw new IllegalArgumentException();
+      }
+      
+      setHeaderField(new HeaderField(HeaderFieldName.CONTENT_LENGTH, "" + length));
+      this.contentLength = length;
   }
-  public String getBody() {
-    return body;
+  public int getContentLength() {
+      return contentLength;
+  }
+  
+  public void setHTTPVersion(HTTPVersion version) {
+      this.version = version;
+  }
+  public HTTPVersion getHTTPVersion() {
+      return version;
   }
   
   
   public String toString() {
-    return HTTPVersion.VERSION_1_1.toString() + " " +
+    String out = "[" + version.toString() + " " +
       code.getStatusCode() + " " +
-      code.getReasonPhrase() + "\r\n\r\n" +
-      body;
+      code.getReasonPhrase() + "]\n";
+    
+    out += headersToString();
+    
+    out += "Body:\n\t[body length: ";
+    
+    if (contentLength > 0) {
+        out += contentLength;
+    } else {
+        out += "unknown";
+    }
+    
+    out += "]";
+    
+    
+    return out;
   }
 }

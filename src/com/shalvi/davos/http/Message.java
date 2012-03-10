@@ -57,5 +57,15 @@ public abstract class Message {
         return new HashMap<HeaderFieldName, HeaderField>(headerFields);
     }
     
+    String headersToString() {
+        String headers = "";
+        
+        for (Map.Entry<HeaderFieldName, HeaderField> h : headerFields.entrySet()) {
+            headers += "\t" + h.getValue().toString() + "\n";
+        }
+        
+        return headers.length() > 0 ? "Headers:\n" + headers : "";
+    }
+    
     public abstract String toString();
 }
