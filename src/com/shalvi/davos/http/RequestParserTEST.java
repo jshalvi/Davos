@@ -201,9 +201,9 @@ public class RequestParserTEST extends TestCase {
     Assert.assertFalse(request.isValid());
   }
   
-  private boolean validParameter(RequestHeaderFieldName key, String value, String line) {
+  private boolean validParameter(HeaderFieldName key, String value, String line) {
       
-      RequestHeaderField param = RequestParser.parseHeaderField(line);
+      HeaderField param = RequestParser.parseHeaderField(line);
       
       if (param.getKey() == key && param.getValue().compareTo(value) == 0) {
           return true;
@@ -214,35 +214,35 @@ public class RequestParserTEST extends TestCase {
   public void testParseParameter() {
       
       Assert.assertTrue(validParameter(
-              RequestHeaderFieldName.HOST,
+              HeaderFieldName.HOST,
               "www.mysite.com",
               "Host: www.mysite.com"));
       
       Assert.assertTrue(validParameter(
-              RequestHeaderFieldName.HOST,
+              HeaderFieldName.HOST,
               "www.mysite.com",
               "Host:www.mysite.com"));
       Assert.assertTrue(validParameter(
-              RequestHeaderFieldName.HOST,
+              HeaderFieldName.HOST,
               "www.mysite.com",
               "HOST: www.mysite.com"));
       
       Assert.assertTrue(validParameter(
-              RequestHeaderFieldName.USER_AGENT, 
+              HeaderFieldName.USER_AGENT, 
               "Mozilla/4.0",
               "User-Agent: Mozilla/4.0"));
       
       Assert.assertTrue(validParameter(
-              RequestHeaderFieldName.CONTENT_LENGTH, 
+              HeaderFieldName.CONTENT_LENGTH, 
               "27",
               "Content-Length: 27"));
       
       Assert.assertTrue(validParameter(
-              RequestHeaderFieldName.CONTENT_TYPE,
+              HeaderFieldName.CONTENT_TYPE,
               "application/x-www-form-urlencoded",
               "Content-Type: application/x-www-form-urlencoded"));
       
-      RequestHeaderFieldName unsupported = RequestHeaderFieldName.UNSUPPORTED;
+      HeaderFieldName unsupported = HeaderFieldName.UNSUPPORTED;
       Assert.assertEquals(unsupported, RequestParser.parseHeaderField("Force: strong").getKey());
       Assert.assertEquals(unsupported, RequestParser.parseHeaderField("Host:").getKey());
       Assert.assertEquals(unsupported, RequestParser.parseHeaderField("Host www.content-length").getKey());
@@ -253,34 +253,34 @@ public class RequestParserTEST extends TestCase {
   public void testRequestHeaderField() {
       
       try {
-          new RequestHeaderField(null, "TEST");
+          new HeaderField(null, "TEST");
           Assert.fail();
       } catch (IllegalArgumentException e) {}
       
       try {
-          new RequestHeaderField(RequestHeaderFieldName.HOST, null);
+          new HeaderField(HeaderFieldName.HOST, null);
           Assert.fail();
       } catch (IllegalArgumentException e) {}
       
       
       String userAgentVal = "Mozilla/4.0";
-      RequestHeaderFieldName userAgentKey = RequestHeaderFieldName.USER_AGENT;
+      HeaderFieldName userAgentKey = HeaderFieldName.USER_AGENT;
       String hostVal = "www.test.com";
-      RequestHeaderFieldName hostKey = RequestHeaderFieldName.HOST;
+      HeaderFieldName hostKey = HeaderFieldName.HOST;
 
-      RequestHeaderField field = new RequestHeaderField(RequestHeaderFieldName.HOST, "www.test.com"),
-          field2 = new RequestHeaderField(hostKey, hostVal),
-          field3 = new RequestHeaderField(hostKey, new String(hostVal));
+      HeaderField field = new HeaderField(HeaderFieldName.HOST, "www.test.com"),
+          field2 = new HeaderField(hostKey, hostVal),
+          field3 = new HeaderField(hostKey, new String(hostVal));
       
-      Assert.assertEquals(RequestHeaderFieldName.HOST, field.getKey());
+      Assert.assertEquals(HeaderFieldName.HOST, field.getKey());
       Assert.assertEquals("www.test.com", field.getValue());
             
       Assert.assertTrue(field.equals(field));
       Assert.assertTrue(field.equals(field2));
       Assert.assertTrue(field.equals(field3));
       
-      Assert.assertFalse(field.equals(new RequestHeaderField(hostKey, userAgentVal)));
-      Assert.assertFalse(field.equals(new RequestHeaderField(userAgentKey, hostVal)));
+      Assert.assertFalse(field.equals(new HeaderField(hostKey, userAgentVal)));
+      Assert.assertFalse(field.equals(new HeaderField(userAgentKey, hostVal)));
       Assert.assertFalse(field.equals(new Object()));
       Assert.assertFalse(field.equals(null));
       
@@ -296,8 +296,8 @@ public class RequestParserTEST extends TestCase {
       return RequestParser.parseRequest(reader);
   }
   
-  private void verifyHeaderField(Request request, RequestHeaderFieldName key, String value) {
-      RequestHeaderField field = request.getHeaderField(key);
+  private void verifyHeaderField(Request request, HeaderFieldName key, String value) {
+      HeaderField field = request.getHeaderField(key);
       Assert.assertEquals(key, field.getKey());
       Assert.assertEquals(value, field.getValue());
   }
@@ -326,10 +326,10 @@ public class RequestParserTEST extends TestCase {
     Request request = parseRequestText(requestText);
     
     Assert.assertEquals(RequestMethod.POST, request.getMethod());
-    verifyHeaderField(request, RequestHeaderFieldName.HOST, "www.mysite.com");
-    verifyHeaderField(request, RequestHeaderFieldName.USER_AGENT, "Mozilla/4.0");
-    verifyHeaderField(request, RequestHeaderFieldName.CONTENT_LENGTH, "30");
-    verifyHeaderField(request, RequestHeaderFieldName.CONTENT_TYPE, "application/x-www-form-urlencoded");   
+    verifyHeaderField(request, HeaderFieldName.HOST, "www.mysite.com");
+    verifyHeaderField(request, HeaderFieldName.USER_AGENT, "Mozilla/4.0");
+    verifyHeaderField(request, HeaderFieldName.CONTENT_LENGTH, "30");
+    verifyHeaderField(request, HeaderFieldName.CONTENT_TYPE, "application/x-www-form-urlencoded");   
      
     requestText = RL_VALID_POST + CRLF +
       "Host: www.mysite.com" + CRLF +

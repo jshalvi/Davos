@@ -17,19 +17,19 @@ public class RequestTEST extends TestCase {
         request1.setRequestURI("/");
         request1.setHTTPVersion(HTTPVersion.VERSION_1_1);
         request1.setValid(true);
-        request1.setHeaderField(new RequestHeaderField(RequestHeaderFieldName.HOST, "www.test.com"));
+        request1.setHeaderField(new HeaderField(HeaderFieldName.HOST, "www.test.com"));
 
         request2.setMethod(RequestMethod.GET);
         request2.setRequestURI("/");
         request2.setHTTPVersion(HTTPVersion.VERSION_1_1);
         request2.setValid(true);
-        request2.setHeaderField(new RequestHeaderField(RequestHeaderFieldName.HOST, "www.test.com"));
+        request2.setHeaderField(new HeaderField(HeaderFieldName.HOST, "www.test.com"));
 
         request3.setMethod(RequestMethod.GET);
         request3.setRequestURI("/");
         request3.setHTTPVersion(HTTPVersion.VERSION_1_1);
         request3.setValid(true);
-        request3.setHeaderField(new RequestHeaderField(RequestHeaderFieldName.HOST, "www.test2.com"));
+        request3.setHeaderField(new HeaderField(HeaderFieldName.HOST, "www.test2.com"));
 
         Assert.assertFalse(request1 == request2);
         Assert.assertTrue(request1.equals(request2));
@@ -59,7 +59,7 @@ public class RequestTEST extends TestCase {
         Assert.assertFalse(request1.equals(builder.toNewRequest()));
         
         builder.initializeDefaults();
-        builder.setRequestHeaderField(new RequestHeaderField(RequestHeaderFieldName.USER_AGENT, "Chrome/10.0"));
+        builder.setRequestHeaderField(new HeaderField(HeaderFieldName.USER_AGENT, "Chrome/10.0"));
         Assert.assertFalse(request1.equals(builder.toNewRequest()));
         
         // Test POSTDATA equality
@@ -77,20 +77,20 @@ public class RequestTEST extends TestCase {
     
     public void testHeaderField() {
         Request request = new Request();
-        RequestHeaderField field;
+        HeaderField field;
         
         try {
             request.setHeaderField(null);
             Assert.fail();
         } catch (IllegalArgumentException e) {}
 
-        request.setHeaderField(new RequestHeaderField(RequestHeaderFieldName.HOST, "www.test.com"));
-        field = request.getHeaderField(RequestHeaderFieldName.HOST);
-        Assert.assertEquals(RequestHeaderFieldName.HOST, field.getKey());
+        request.setHeaderField(new HeaderField(HeaderFieldName.HOST, "www.test.com"));
+        field = request.getHeaderField(HeaderFieldName.HOST);
+        Assert.assertEquals(HeaderFieldName.HOST, field.getKey());
         Assert.assertEquals("www.test.com", field.getValue());
         
-        request.setHeaderField(new RequestHeaderField(RequestHeaderFieldName.HOST, "www.test2.com"));
-        field = request.getHeaderField(RequestHeaderFieldName.HOST);
+        request.setHeaderField(new HeaderField(HeaderFieldName.HOST, "www.test2.com"));
+        field = request.getHeaderField(HeaderFieldName.HOST);
         Assert.assertEquals("www.test2.com", field.getValue());
         
         try {
@@ -99,18 +99,18 @@ public class RequestTEST extends TestCase {
         } catch (IllegalArgumentException e) {}
         
         try {
-            request.setHeaderField(new RequestHeaderField(RequestHeaderFieldName.UNSPECIFIED, ""));
+            request.setHeaderField(new HeaderField(HeaderFieldName.UNSPECIFIED, ""));
             Assert.fail();
         } catch (IllegalArgumentException e) {}
         
         try {
-            request.setHeaderField(new RequestHeaderField(RequestHeaderFieldName.UNSUPPORTED, ""));
+            request.setHeaderField(new HeaderField(HeaderFieldName.UNSUPPORTED, ""));
             Assert.fail();
         } catch (IllegalArgumentException e) {}
         
         Assert.assertEquals(
-                RequestHeaderFieldName.UNSPECIFIED, 
-                request.getHeaderField(RequestHeaderFieldName.CONTENT_TYPE).getKey());
+                HeaderFieldName.UNSPECIFIED, 
+                request.getHeaderField(HeaderFieldName.CONTENT_TYPE).getKey());
     }
     
     private void assertPostdataException(String key, String val) {
@@ -139,16 +139,16 @@ public class RequestTEST extends TestCase {
         Request request = new Request();
         assertEquals(0, request.getContentLength());
         
-        request.setHeaderField(new RequestHeaderField(RequestHeaderFieldName.CONTENT_LENGTH, "0"));
+        request.setHeaderField(new HeaderField(HeaderFieldName.CONTENT_LENGTH, "0"));
         assertEquals(0, request.getContentLength());
         
-        request.setHeaderField(new RequestHeaderField(RequestHeaderFieldName.CONTENT_LENGTH, "5"));
+        request.setHeaderField(new HeaderField(HeaderFieldName.CONTENT_LENGTH, "5"));
         assertEquals(5, request.getContentLength());
         
-        request.setHeaderField(new RequestHeaderField(RequestHeaderFieldName.CONTENT_LENGTH, ""));
+        request.setHeaderField(new HeaderField(HeaderFieldName.CONTENT_LENGTH, ""));
         assertEquals(0, request.getContentLength());
 
-        request.setHeaderField(new RequestHeaderField(RequestHeaderFieldName.CONTENT_LENGTH, "notanumber"));
+        request.setHeaderField(new HeaderField(HeaderFieldName.CONTENT_LENGTH, "notanumber"));
         assertEquals(0, request.getContentLength());
     }
 }

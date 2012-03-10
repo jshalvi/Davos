@@ -11,15 +11,10 @@ import java.util.Map;
  * @author jshalvi
  *
  */
-public class Request {
+public class Request extends Message {
 
   private RequestMethod method;
-  private String uri;
-  private HTTPVersion version;
   private boolean valid;
-  
-  private Map<RequestHeaderFieldName,RequestHeaderField> headerFields = 
-      new HashMap<RequestHeaderFieldName, RequestHeaderField>();
   
   private Map<String, String> postData = new HashMap<String, String>();
   
@@ -83,22 +78,6 @@ public class Request {
     return uri;
   }
   
-  /**
-   * Sets the HTTP version of the request.
-   * @param v
-   */
-  void setHTTPVersion(HTTPVersion v) {
-    version = v;
-  }
-  
-  /**
-   * Returns the HTTP version of the request.
-   * @return
-   */
-  public HTTPVersion getHTTPVersion() {
-    return version;
-  }
-  
   
   void setValid(boolean v) {
     valid = v;
@@ -114,37 +93,6 @@ public class Request {
   
   public String toString() {
     return "[" + method.toString() + " " + uri + "]";
-  }
-  
-  /**
-   * Sets a header field.  If the field is already set, the old value will be overwritten.
-   * @param field
-   * @throws IllegalArgumentException if field is null
-   */
-  public void setHeaderField(RequestHeaderField field) {
-      if (field == null || 
-              field.getKey() == RequestHeaderFieldName.UNSPECIFIED || 
-              field.getKey() == RequestHeaderFieldName.UNSUPPORTED) {
-          throw new IllegalArgumentException();
-      }
-      
-      headerFields.put(field.getKey(), field);
-  }
-  
-  public RequestHeaderField getHeaderField(RequestHeaderFieldName key) {
-      if (key == null) {
-          throw new IllegalArgumentException();
-      }
-      
-      if (headerFields.containsKey(key)) {
-          return headerFields.get(key);
-      }
-      
-      return new RequestHeaderField(RequestHeaderFieldName.UNSPECIFIED, "");
-  }
-  
-  Map<RequestHeaderFieldName, RequestHeaderField> getHeaderFields() {
-      return new HashMap<RequestHeaderFieldName, RequestHeaderField>(headerFields);
   }
   
   /**
@@ -183,7 +131,7 @@ public class Request {
       int contentLen = 0;
       
       try {
-          contentLen = Integer.parseInt(getHeaderField(RequestHeaderFieldName.CONTENT_LENGTH).getValue());
+          contentLen = Integer.parseInt(getHeaderField(HeaderFieldName.CONTENT_LENGTH).getValue());
       } catch (NumberFormatException e) {}
       
       return contentLen;

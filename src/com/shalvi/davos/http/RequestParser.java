@@ -37,7 +37,7 @@ enum ParserState {
     public Request parse(BufferedReader reader, Request request) {
       Request r = new Request(request);
       String line = RequestParser.readLine(reader);
-      RequestHeaderField field;
+      HeaderField field;
       
       if (line == null) {
           
@@ -50,11 +50,11 @@ enum ParserState {
           }
           field = RequestParser.parseHeaderField(line);
           
-          if (RequestHeaderFieldName.UNSPECIFIED != r.getHeaderField(field.getKey()).getKey()) {
+          if (HeaderFieldName.UNSPECIFIED != r.getHeaderField(field.getKey()).getKey()) {
               r.setValid(false);
               break;
           }
-          if (RequestHeaderFieldName.UNSUPPORTED != field.getKey()) {
+          if (HeaderFieldName.UNSUPPORTED != field.getKey()) {
               r.setHeaderField(RequestParser.parseHeaderField(line));
           }
           
@@ -297,8 +297,8 @@ public class RequestParser {
       return m;
   }
   
-  static RequestHeaderField parseHeaderField(String paramLine) {
-      RequestHeaderField param = new RequestHeaderField(RequestHeaderFieldName.UNSUPPORTED, "");
+  static HeaderField parseHeaderField(String paramLine) {
+      HeaderField param = new HeaderField(HeaderFieldName.UNSUPPORTED, "");
       
       if (paramLine == null || paramLine.compareTo("") == 0) {
           return param;
@@ -312,9 +312,9 @@ public class RequestParser {
       String paramLineKey = paramLineArr[0];
       String paramLineVal = paramLineArr[1].trim();
       
-      for (RequestHeaderFieldName key : RequestHeaderFieldName.values()) {
+      for (HeaderFieldName key : HeaderFieldName.values()) {
           if (paramLineKey.compareToIgnoreCase(key.toString()) == 0) {
-              param = new RequestHeaderField(key, paramLineVal);
+              param = new HeaderField(key, paramLineVal);
               break;
           }
       }

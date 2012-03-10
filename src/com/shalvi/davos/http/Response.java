@@ -2,7 +2,7 @@ package com.shalvi.davos.http;
 
 import java.io.BufferedReader;
 
-public class Response {
+public class Response extends Message {
 
   private ResponseCode code;
   private String body;
