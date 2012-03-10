@@ -19,16 +19,22 @@ public class MockRequestBuilder {
   public void setValid(boolean valid) {
     request.setValid(valid);
   }
-  public void setRequestHeaderField(HeaderField field) {
+  public void setHeaderField(HeaderField field) {
       request.setHeaderField(field);
   }
+  public void setPostdata(String key, String val) {
+      request.setPostdata(key, val);
+  }
+  
+  /**
+   * Creates a basic
+   */
   public void initializeDefaults() {
     setMethod(RequestMethod.GET);
     setRequestURI("/");
     setHTTPVersion(HTTPVersion.VERSION_1_1);
     setValid(true);
     request.setHeaderField(new HeaderField(HeaderFieldName.HOST, "www.test.com"));
-    request.setPostdata("testKey", "testVal");
   }
   public Request toNewRequest() {
     return new Request(request);

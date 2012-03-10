@@ -59,7 +59,7 @@ public class RequestTEST extends TestCase {
         Assert.assertFalse(request1.equals(builder.toNewRequest()));
         
         builder.initializeDefaults();
-        builder.setRequestHeaderField(new HeaderField(HeaderFieldName.USER_AGENT, "Chrome/10.0"));
+        builder.setHeaderField(new HeaderField(HeaderFieldName.USER_AGENT, "Chrome/10.0"));
         Assert.assertFalse(request1.equals(builder.toNewRequest()));
         
         // Test POSTDATA equality
@@ -150,5 +150,32 @@ public class RequestTEST extends TestCase {
 
         request.setHeaderField(new HeaderField(HeaderFieldName.CONTENT_LENGTH, "notanumber"));
         assertEquals(0, request.getContentLength());
+    }
+    
+    public void testToString() {
+        
+        String HEADERS = "Headers:\n\tHost: www.test.com\n";
+        String POSTDATA = "Postdata:\n\ttestkey=testval\n";
+
+        // GET
+        MockRequestBuilder builder = new MockRequestBuilder();
+        builder.initializeDefaults();
+        builder.setMethod(RequestMethod.GET);
+        builder.setRequestURI("/test.html");
+        assertEquals("[GET /test.html HTTP/1.1]\n" + HEADERS, builder.toNewRequest().toString());
+        
+        // HEAD
+        builder.setMethod(RequestMethod.HEAD);
+        assertEquals("[HEAD /test.html HTTP/1.1]\n" + HEADERS, builder.toNewRequest().toString());
+
+        // DELETE
+        builder.setMethod(RequestMethod.DELETE);
+        assertEquals("[DELETE /test.html HTTP/1.1]\n" + HEADERS, builder.toNewRequest().toString());
+        
+        // POST w/data
+        builder.setMethod(RequestMethod.POST);
+        builder.setPostdata("testkey", "testval");
+        assertEquals("[POST /test.html HTTP/1.1]\n" + HEADERS + POSTDATA,
+            builder.toNewRequest().toString());
     }
 }

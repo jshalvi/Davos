@@ -41,4 +41,8 @@ class HeaderField {
         }
         return result;
     }
+    
+    public String toString() {
+        return key.toString() + ": " + value;
+    }
 }

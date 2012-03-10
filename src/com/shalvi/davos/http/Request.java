@@ -91,10 +91,6 @@ public class Request extends Message {
     return valid;
   }
   
-  public String toString() {
-    return "[" + method.toString() + " " + uri + "]";
-  }
-  
   /**
    * Adds a postdata field to the request.
    * @param key
@@ -137,6 +133,25 @@ public class Request extends Message {
       return contentLen;
   }
   
+  public String toString() {
+      String startLine="", headers = "", postdata="";
+      
+      startLine =  "[" + method.toString() + " " + uri + " " + version.toString() + "]\n";
+      
+      for (Map.Entry<String, String> e : postData.entrySet()) {
+          postdata += "\t" + e.getKey() + "=" + e.getValue() + "\n";
+      }
+      
+      for (Map.Entry<HeaderFieldName, HeaderField> h : headerFields.entrySet()) {
+          headers += "\t" + h.getValue().toString() + "\n";
+      }
+      
+      String out = startLine;
+      out += headers.length() > 0 ? "Headers:\n" + headers : "";
+      out += postdata.length() > 0 ? "Postdata:\n" + postdata : "";
+      return out;
+  }
+    
   public boolean equals(Object thatObject) {
       if(!(thatObject instanceof Request)) {
           return false;
