@@ -4,28 +4,46 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Message {
-    protected String uri;
     protected HTTPVersion version;
     protected Map<HeaderFieldName,HeaderField> headerFields = 
         new HashMap<HeaderFieldName, HeaderField>();
+
+
+    /**
+     * Standard constructor.
+     */
+    Message() {}
     
+    /**
+     * Copy constructor.
+     * @param message to copy
+     * @throws IllegalArgumentException if message is null.
+     */
+    Message(Message message) {
+        if (message == null) {
+            throw new IllegalArgumentException();
+        }
+
+        version = message.version;
+        headerFields = message.getHeaderFields();
+    }
 
     /**
      * Sets the HTTP version of the request.
      * @param v
      */
     void setHTTPVersion(HTTPVersion v) {
-      version = v;
+        version = v;
     }
-    
+
     /**
      * Returns the HTTP version of the request.
      * @return
      */
     public HTTPVersion getHTTPVersion() {
-      return version;
+        return version;
     }
-    
+
     /**
      * Sets a header field.  If the field is already set, the old value will be overwritten.
      * @param field
@@ -37,45 +55,60 @@ public abstract class Message {
                 field.getKey() == HeaderFieldName.UNSUPPORTED) {
             throw new IllegalArgumentException();
         }
-        
+
         headerFields.put(field.getKey(), field);
     }
-    
+
     public HeaderField getHeaderField(HeaderFieldName key) {
         if (key == null) {
             throw new IllegalArgumentException();
         }
-        
+
         if (headerFields.containsKey(key)) {
             return headerFields.get(key);
         }
-        
+
         return new HeaderField(HeaderFieldName.UNSPECIFIED, "");
     }
-    
+
+    /**
+     * Returns a copy of this message's header fields map.
+     * @return
+     */
     Map<HeaderFieldName, HeaderField> getHeaderFields() {
         return new HashMap<HeaderFieldName, HeaderField>(headerFields);
     }
-    
+
     String headersToString() {
         String headers = "";
-        
+
         for (Map.Entry<HeaderFieldName, HeaderField> h : headerFields.entrySet()) {
             headers += "\t" + h.getValue().toString() + "\n";
         }
-        
+
         return headers.length() > 0 ? "Headers:\n" + headers : "";
     }
-    
+
     public String headersToHTTPString() {
         String headers = "";
-        
+
         for (Map.Entry<HeaderFieldName, HeaderField> h : headerFields.entrySet()) {
             headers += h.getValue().toString() + "\r\n";
         }
-        
+
         return headers;
     }
     
+    public boolean equals(Object thatObject) {
+        if(!(thatObject instanceof Message) || thatObject == null) {
+            return false;
+        }
+        
+        Message that = (Message) thatObject;
+        
+        return version == that.getHTTPVersion() &&
+            headerFields.equals(that.headerFields);
+    }
+
     public abstract String toString();
 }

@@ -26,13 +26,17 @@ public class ResponseReader {
         out += response.getHTTPVersion().toString() + " ";
         out += response.getResponseCode().toString() + CRLF;
         out += response.headersToHTTPString() + CRLF;
-        char[] cbuf = new char[response.getContentLength()];
-        try {
-            response.getReader().read(cbuf, 0, response.getContentLength());
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (response.getReader() != null) {
+            char[] cbuf = new char[response.getContentLength()];
+
+            try {
+                response.getReader().read(cbuf, 0, response.getContentLength());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            out += new String(cbuf);
         }
-        out += new String(cbuf);
         return out;
     }
 }

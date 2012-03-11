@@ -11,12 +11,11 @@ import com.shalvi.davos.http.Response;
 import com.shalvi.davos.http.ResponseBuilder;
 import com.shalvi.davos.http.ResponseCode;
 
-public class StaticFileRequestHandler implements RequestHandler {
+public class StaticFileRequestHandler extends RequestMethodHandler {
     private File rootDirectory;
 
     @Override
-    public Response execute(Request request) {
-
+    public Response doGet(Request request) {
         Response response;
 
         if (request == null) {
@@ -42,7 +41,7 @@ public class StaticFileRequestHandler implements RequestHandler {
             int contentLength = determineContentLength(reader2);
             
             if (contentLength > 0) {
-                builder.setResponseCode(ResponseCode.SUCCESS_200);
+                builder.setResponseCode(ResponseCode.SUCCESSFUL_200);
                 builder.setReader(reader);
                 builder.setContentLength(contentLength);
                 response = builder.toResponse();
@@ -56,7 +55,17 @@ public class StaticFileRequestHandler implements RequestHandler {
 
         return response;      
     }
+    
+    @Override
+    public Response doPost(Request request) {
+        return doGet(request);
+    }
 
+    @Override
+    public Response doHead(Request request) {
+        return ResponseBuilder.getHeadersOnlyResponse(doGet(request));
+    }
+    
     int determineContentLength(BufferedReader reader) {
         int len = -1;
         char c = ' ';

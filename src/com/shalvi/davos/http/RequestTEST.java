@@ -44,7 +44,8 @@ public class RequestTEST extends TestCase {
         builder.initializeDefaults();
         request1 = builder.toNewRequest();
         builder.setMethod(RequestMethod.POST);
-        Assert.assertFalse(request1.equals(builder.toNewRequest()));
+        Request tmp = builder.toNewRequest();
+        Assert.assertFalse(request1.equals(tmp));
         
         builder.initializeDefaults();
         builder.setHTTPVersion(HTTPVersion.VERSION_1_0);

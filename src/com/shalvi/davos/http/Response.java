@@ -7,7 +7,6 @@ public class Response extends Message {
     private ResponseCode code;
     private BufferedReader reader;
     private int contentLength = -1;
-    private HTTPVersion version;
 
     public Response() {}
 
@@ -16,6 +15,19 @@ public class Response extends Message {
     }
     public Response(ResponseCode code, String body) {
         this.code = code;
+    }
+    
+    /**
+     * Default copy constructor.
+     * @param response
+     * @throws IllegalArgumentException if response is null
+     */
+    public Response(Response response) {
+        super(response);
+        
+        code = response.getResponseCode();
+        reader = response.getReader();
+        contentLength = response.getContentLength();
     }
     public void setResponseCode(ResponseCode code) {
         this.code = code;
@@ -49,14 +61,6 @@ public class Response extends Message {
         return contentLength;
     }
 
-    public void setHTTPVersion(HTTPVersion version) {
-        this.version = version;
-    }
-    public HTTPVersion getHTTPVersion() {
-        return version;
-    }
-
-
     public String toString() {
         String out = "[" + version.toString() + " " +
         code.getStatusCode() + " " +
@@ -76,5 +80,21 @@ public class Response extends Message {
 
 
         return out;
+    }
+    
+    /**
+     * Compares two Responses for equality.  Note, this does not take equality of the
+     * reader into account.
+     */
+    public boolean equals(Object thatObect) {
+        if(!(thatObect instanceof Response) || thatObect == null) {
+            return false;
+        }
+        Response that = (Response) thatObect;
+
+        
+        return super.equals(that) &&
+            this.code == that.getResponseCode() &&
+            this.contentLength == that.getContentLength();
     }
 }

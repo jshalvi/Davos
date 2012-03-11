@@ -1,8 +1,9 @@
 package com.shalvi.davos.http;
 
 public enum ResponseCode {
-  SUCCESS_200 ("200", "OK"),
-  ERROR_404 ("404", "Not found");
+  SUCCESSFUL_200 ("200", "OK"),
+  CLIENT_ERROR_404 ("404", "Not found"),
+  SERVER_ERROR_501 ("501", "Not implemented");
   
   private String code;
   private String message;

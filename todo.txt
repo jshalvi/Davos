@@ -3,8 +3,9 @@ RequestFactory.parseRequest(request)
 Returns a request object
 Patterns used:
 	State used in parsing
-	Strategy used in dispatcher
-	Strategy used in filetype dispatcher
+	Factory used in parsing
+	Builder used in response
+	Proxy/Strategy used in dispatcher
 
 	discussed so far:
 		x Factory
@@ -21,6 +22,13 @@ Patterns used:
 
 	potential uses:
 	Singleton for config
+
+	The good:
+		Use of state in parsing
+
+	The bad:
+		Response reader is messy
+
 
 02/25/2012
 ===
@@ -48,9 +56,9 @@ Release 3
 	x The server shall listen listen for requests on a port specified at run time
 		specify port at run-time
 
-	The server shall support console logging
+	x The server shall support console logging
 		x Log GET
-	--> Log POST
+		x Log POST
 			x add postdata to request + new request
 			x modify equals
 			x modify request equals test
@@ -58,41 +66,52 @@ Release 3
 			x parse postdata
 			x parse POST test (possible parser state reorg)
 			x parse body (?)
-			Request.toString();
-		Log HEAD
-		Log DELETE
+			x Request.toString();
+			
+		x Log HEAD
+		x Log DELETE
 
 	x The server shall handle unsupported requests gracefully
 		x 404
 
 	x Design dispatcher and server
 
-	Build Server
+	x Response.toString()
+
+	x Build Server
 		Server
 			setPort
 			setRootDirectory
 			run
 			stop
-	Build dispatcher
-	Build Handler interface
 
-	The server shall support plain-text filetypes (html, txt, css, js) \
-		Dispatcher per filetype
+	x Build dispatcher
 
-	The server shall support the JPEG filetype
-		Responses with MIME/type and content-length
+	x command-line rootDirectory option
+
+	x Build Handler interface
+		x hook up staticfilehandler to plain-text types
+
+	x The server shall support plain-text filetypes (html, txt, css, js) \
+		x Dispatcher per filetype (N/A)
+
+	x The server shall support the JPEG filetype
+		x give a quick try
+		x Responses content-length
+
+	x specify htdocs at run-time
 
 	The server shall support the following HTTP 1.1 requests: GET, POST, HEAD, and DELETE
-		GET requests will return the desired resource
-		POST requests will return the desired resource, with POST data logged in the console
-		HEAD requests will return headers and be logged to the console
-		DELETE requests will have no effect, but will be logged to the console
+		x GET requests will return the desired resource
+		x POST requests will return the desired resource, with POST data logged in the console
+		x HEAD requests will return headers and be logged to the console
+		x DELETE requests will have no effect, but will be logged to the console
 
 	Build cookie parsing
 	Set cookies in response
 	The server shall support cookies
 
-	Build session
+--> Build session
 		id
 		Map
 
@@ -110,14 +129,17 @@ Release 3
 
 	The server shall support basic authentication
 
-	specific content-type support
 
 
 Release 4
 
-	specify htdocs at run-time
 	The server shall support cgi scripts
 	The server shall support a generic server configuration mechanism
+	demo dynamic page with custom handler
+	specific content-type support
+		Responses with MIME/type
+
+	Log unsupported requests properly and send 501 accordingly
 
 Optional (MVC web framework):
 
