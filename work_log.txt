@@ -146,3 +146,8 @@ Mar 10
 1 hr coding
 30 min bug (incorrect readline for postdata)
 
+1:30 - 4
+1 hr coding
+.5 hr design/research
+
+4:30

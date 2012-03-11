@@ -68,14 +68,15 @@ Release 3
 
 	x Design dispatcher and server
 
-	Response.toString()
+	x Response.toString()
 
-	Build Server
+	x Build Server
 		Server
 			setPort
 			setRootDirectory
 			run
 			stop
+
 	Build dispatcher
 	Build Handler interface
 
@@ -122,6 +123,7 @@ Release 4
 	specify htdocs at run-time
 	The server shall support cgi scripts
 	The server shall support a generic server configuration mechanism
+	demo dynamic page with custom handler
 
 Optional (MVC web framework):
 
