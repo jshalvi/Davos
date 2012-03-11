@@ -7,24 +7,38 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import com.shalvi.davos.handler.NoHandlerFoundException;
+import com.shalvi.davos.handler.RequestDispatcher;
 import com.shalvi.davos.handler.RequestHandler;
 import com.shalvi.davos.handler.StaticFileRequestHandler;
+import com.shalvi.davos.handler.http.ResponseReader;
 import com.shalvi.davos.http.Request;
 import com.shalvi.davos.http.RequestParser;
 import com.shalvi.davos.http.Response;
-import com.shalvi.davos.http.ResponseCode;
+import com.shalvi.davos.http.ResponseBuilder;
 
 public class Server {
-    // set port
     private static int DEFAULT_PORT = 8888;
-    private int port;
-    private String rootDirectory;
+    private int port = DEFAULT_PORT;
+    private String rootDirectory = ".";
+    private RequestDispatcher dispatcher = new RequestDispatcher();
 
     public Server() {
-        port = DEFAULT_PORT;
-        rootDirectory = ".";
+        initializeDefaultHandlers();
+    }
+    
+    public Server(int port, String rootDirectory) {
+        setPort(port);
+        setRootDirectory(rootDirectory);
+        initializeDefaultHandlers();
     }
 
+    private void initializeDefaultHandlers() {
+        StaticFileRequestHandler staticFileHandler = new StaticFileRequestHandler();
+        staticFileHandler.setRootDirectory(rootDirectory);
+        dispatcher.addHandler(".*", staticFileHandler);
+    }
+    
     public void setPort(int port) {
         this.port = port;
     }
@@ -40,17 +54,11 @@ public class Server {
     public void run() {
         BufferedReader reader;
         PrintWriter writer;
-
-        StaticFileRequestHandler handler = new StaticFileRequestHandler();
+        RequestHandler handler;
+        Request request;
+        Response response;
 
         log("Starting on port " + port + "...");
-        try {
-            handler.setRootDirectory(rootDirectory);
-            log("Serving files from " + rootDirectory);
-        } catch (IllegalArgumentException e) {
-            log("Invalid root directory: " + rootDirectory);
-            return;
-        }
 
 
         try {
@@ -62,24 +70,30 @@ public class Server {
                 writer = new PrintWriter(socket.getOutputStream());
                 reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-                Request request = RequestParser.parseRequest(reader);
-                System.out.println(request.toString());
-                Response response;
+                request = RequestParser.parseRequest(reader);
+                log(request.toString());
 
                 if (request.isValid()) {
 
-                    response = handler.execute(request);
-                    BufferedReader responseReader = response.getReader();
-                    String line;
-                    if (responseReader != null) {
-                        while ((line = responseReader.readLine()) != null) {
-                            writer.print(line);
-                        }
+                    try {
+                        handler = dispatcher.dispatch(request.getRequestURI());
+                        response = handler.execute(request);
+                    } catch (NoHandlerFoundException e) {
+                        response = ResponseBuilder.getDefault404Response();
                     }
+                    
                 } else {
-                    response = new Response(ResponseCode.ERROR_404, "File not found, bro");
-                    writer.print(response.toString());
+                    /*
+                     * TODO: check to see if a more appropriate "Invalid request" 
+                     * response exists.
+                     */
+                    response = ResponseBuilder.getDefault404Response();
                 }
+                
+                ResponseReader responseReader = new ResponseReader(response);
+                String responseText = responseReader.toString();
+                // System.out.println(responseText);
+                writer.print(responseText);
 
                 writer.flush();
                 writer.close();

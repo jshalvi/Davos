@@ -19,4 +19,8 @@ public enum ResponseCode {
   public String getReasonPhrase() {
     return message;
   }
+  
+  public String toString() {
+      return code + " " + message;
+  }
 }

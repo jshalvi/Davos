@@ -1,6 +1,7 @@
 package com.shalvi.davos.http;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.StringReader;
 
 import junit.framework.Assert;
@@ -46,5 +47,20 @@ public class ResponseTEST extends TestCase {
                 "Body:\n" +
                 "\t[body length: " + markup.length() + "]",
                 response.toString());
+    }
+    
+    public void testDefault404() {
+        Response response = ResponseBuilder.getDefault404Response();
+        String responseBody = "";
+        
+        assertEquals(ResponseCode.ERROR_404, response.getResponseCode());
+        
+        try {
+            responseBody = response.getReader().readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        assertEquals(ResponseBuilder.DEFAULT_404_RESPONSE_TEXT, responseBody);
     }
 }

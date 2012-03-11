@@ -137,17 +137,3 @@ passed!
 03/08/2012 - Design:	1:00
 03/08/2012 - Coding:	1:00
 03/08/2012 - Bugs:		0:30
-
-Mar 8
-three hours of design
-
-Mar 10
-1pm - 1:30pm
-1 hr coding
-30 min bug (incorrect readline for postdata)
-
-1:30 - 4
-1 hr coding
-.5 hr design/research
-
-4:30

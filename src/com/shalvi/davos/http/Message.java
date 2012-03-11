@@ -31,7 +31,7 @@ public abstract class Message {
      * @param field
      * @throws IllegalArgumentException if field is null
      */
-    public void setHeaderField(HeaderField field) {
+    void setHeaderField(HeaderField field) {
         if (field == null || 
                 field.getKey() == HeaderFieldName.UNSPECIFIED || 
                 field.getKey() == HeaderFieldName.UNSUPPORTED) {
@@ -65,6 +65,16 @@ public abstract class Message {
         }
         
         return headers.length() > 0 ? "Headers:\n" + headers : "";
+    }
+    
+    public String headersToHTTPString() {
+        String headers = "";
+        
+        for (Map.Entry<HeaderFieldName, HeaderField> h : headerFields.entrySet()) {
+            headers += h.getValue().toString() + "\r\n";
+        }
+        
+        return headers;
     }
     
     public abstract String toString();

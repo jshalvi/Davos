@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 
 import com.shalvi.davos.http.Request;
 import com.shalvi.davos.http.Response;
@@ -15,6 +16,8 @@ public class StaticFileRequestHandler implements RequestHandler {
 
     @Override
     public Response execute(Request request) {
+
+        Response response;
 
         if (request == null) {
             throw new IllegalArgumentException("Null request object");
@@ -29,14 +32,47 @@ public class StaticFileRequestHandler implements RequestHandler {
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(f));
-            builder.setResponseCode(ResponseCode.SUCCESS_200);
-            builder.setReader(reader);
+            
+            /*
+             * Right now I don't know of a good way to re-use this reader, creating
+             * a second one just to calculate length.
+             */
+            BufferedReader reader2 = new BufferedReader(new FileReader(f));
+            
+            int contentLength = determineContentLength(reader2);
+            
+            if (contentLength > 0) {
+                builder.setResponseCode(ResponseCode.SUCCESS_200);
+                builder.setReader(reader);
+                builder.setContentLength(contentLength);
+                response = builder.toResponse();
+            } else {
+                response = ResponseBuilder.getDefault404Response();
+            }
+            
         } catch (FileNotFoundException e) {
-            builder.setResponseCode(ResponseCode.ERROR_404);
-            // builder.setBody(ResponseCode.ERROR_404.getReasonPhrase());
+            response = ResponseBuilder.getDefault404Response();
         }
 
-        return builder.toResponse();      
+        return response;      
+    }
+
+    int determineContentLength(BufferedReader reader) {
+        int len = -1;
+        char c = ' ';
+        try {
+            while (c != (char) -1) {
+                c = (char) reader.read();
+                len++;
+            }
+            if (len == 0) len = -1;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            len = -1;
+        }
+        
+        return len;
     }
 
     public void setRootDirectory(String path) throws IllegalArgumentException {
@@ -51,7 +87,7 @@ public class StaticFileRequestHandler implements RequestHandler {
             throw new IllegalArgumentException(
                     "Specified path is not a directory: " + path);
         }
-        
+
         rootDirectory = f;
     }
 }

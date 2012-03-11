@@ -50,7 +50,7 @@ Release 3
 
 	The server shall support console logging
 		x Log GET
-		x Log POST
+	--> Log POST
 			x add postdata to request + new request
 			x modify equals
 			x modify request equals test
@@ -59,24 +59,20 @@ Release 3
 			x parse POST test (possible parser state reorg)
 			x parse body (?)
 			Request.toString();
-			
-		x Log HEAD
-		x Log DELETE
+		Log HEAD
+		Log DELETE
 
 	x The server shall handle unsupported requests gracefully
 		x 404
 
 	x Design dispatcher and server
 
-	x Response.toString()
-
-	x Build Server
+	Build Server
 		Server
 			setPort
 			setRootDirectory
 			run
 			stop
-
 	Build dispatcher
 	Build Handler interface
 
@@ -84,7 +80,6 @@ Release 3
 		Dispatcher per filetype
 
 	The server shall support the JPEG filetype
-		give a quick try
 		Responses with MIME/type and content-length
 
 	The server shall support the following HTTP 1.1 requests: GET, POST, HEAD, and DELETE
@@ -123,7 +118,6 @@ Release 4
 	specify htdocs at run-time
 	The server shall support cgi scripts
 	The server shall support a generic server configuration mechanism
-	demo dynamic page with custom handler
 
 Optional (MVC web framework):
 

@@ -67,9 +67,9 @@ public class RequestDispatcher {
      * Attempts to find a handler whose pattern matches the given URI.
      * @param uri
      * @return RequestHandler to execute.
-     * @throws HandlerNotFoundException if a handler is not found.
+     * @throws NoHandlerFoundException if a handler is not found.
      */
-    public RequestHandler dispatch(String uri) throws HandlerNotFoundException {
+    public RequestHandler dispatch(String uri) throws NoHandlerFoundException {
         Matcher m;
         RequestHandler handler = null;
         
@@ -82,7 +82,7 @@ public class RequestDispatcher {
         }
         
         if (handler == null) {
-            throw new HandlerNotFoundException();
+            throw new NoHandlerFoundException();
         }
         
         return handler;

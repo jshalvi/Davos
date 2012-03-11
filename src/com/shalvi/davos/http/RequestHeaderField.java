@@ -1,12 +1,12 @@
 package com.shalvi.davos.http;
 
-public class HeaderField {
+class RequestHeaderField {
 
-    private HeaderFieldName key;
+    private RequestHeaderFieldName key;
     private String value;
     private volatile int hashCode;
     
-    HeaderField(HeaderFieldName key, String value) {
+    RequestHeaderField(RequestHeaderFieldName key, String value) {
         if (key == null || value == null) {
             throw new IllegalArgumentException();
         }
@@ -14,7 +14,7 @@ public class HeaderField {
         this.value = value;
     }
     
-    public HeaderFieldName getKey() {
+    public RequestHeaderFieldName getKey() {
         return key;
     }
     
@@ -23,11 +23,11 @@ public class HeaderField {
     }
     
     public boolean equals(Object thatObject) {
-        if (!(thatObject instanceof HeaderField)) {
+        if (!(thatObject instanceof RequestHeaderField)) {
             return false;
         }
         
-        HeaderField that = (HeaderField) thatObject;
+        RequestHeaderField that = (RequestHeaderField) thatObject;
         return key == that.getKey() && value.compareTo(that.getValue()) == 0;
     }
     
@@ -40,9 +40,5 @@ public class HeaderField {
             result = 31 * result + value.hashCode();
         }
         return result;
-    }
-    
-    public String toString() {
-        return key.toString() + ": " + value;
     }
 }

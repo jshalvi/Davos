@@ -1,7 +1,5 @@
 package com.shalvi.davos;
 
-import java.io.File;
-
 import com.shalvi.davos.server.Server;
 
 public class Main {
@@ -15,7 +13,7 @@ public class Main {
     public static void main(String[] args) {
         int port = DEFAULT_PORT;
         String rootDirectory = "";
-        
+
         CommandLineArguments cargs;
 
         try {
@@ -30,9 +28,13 @@ public class Main {
         }
 
         rootDirectory = cargs.getRootDirectory() == null ? "." : cargs.getRootDirectory();
-        Server server = new Server();
-        server.setPort(port);
-        server.setRootDirectory(rootDirectory);
-        server.run();
+        try {
+            Server server = new Server(port, rootDirectory);
+            server.run();
+
+        } catch (IllegalArgumentException e) {
+            printUsage();
+            return;
+        }
     }
 }

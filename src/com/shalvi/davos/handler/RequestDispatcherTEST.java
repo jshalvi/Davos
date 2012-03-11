@@ -90,7 +90,7 @@ public class RequestDispatcherTEST extends TestCase {
         try {
             dispatcher.dispatch("/");
             Assert.fail();
-        } catch(HandlerNotFoundException e) {}
+        } catch(NoHandlerFoundException e) {}
         
         dispatcher.addHandler(validPatterns, handler2);       
     }
@@ -114,7 +114,7 @@ public class RequestDispatcherTEST extends TestCase {
             assertEquals(handler2, dispatcher.dispatch("/test.html"));
             assertEquals(handler2, dispatcher.dispatch("/test.js"));
             assertEquals(handler2, dispatcher.dispatch("/test8.html"));
-        } catch (HandlerNotFoundException e) {
+        } catch (NoHandlerFoundException e) {
             Assert.fail();
         }
 
@@ -126,7 +126,7 @@ public class RequestDispatcherTEST extends TestCase {
         
         try {
             assertEquals(handler2, dispatcher.dispatch("/"));
-        } catch (HandlerNotFoundException e) {
+        } catch (NoHandlerFoundException e) {
             Assert.fail();
         }
     }
@@ -148,7 +148,7 @@ public class RequestDispatcherTEST extends TestCase {
             assertEquals(handler1, dispatcher.dispatch("/"));
             assertEquals(handler1, dispatcher.dispatch("test.html"));
             assertEquals(handler1, dispatcher.dispatch("test.js"));
-        } catch(HandlerNotFoundException e) {
+        } catch(NoHandlerFoundException e) {
             Assert.fail();
         }
     }
@@ -159,7 +159,7 @@ public class RequestDispatcherTEST extends TestCase {
         try {
             dispatcher.dispatch("test.html");
             Assert.fail();
-        } catch(HandlerNotFoundException e) {}
+        } catch(NoHandlerFoundException e) {}
     }
 
 }
