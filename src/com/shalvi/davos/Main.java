@@ -22,6 +22,11 @@ public class Main {
             printUsage();
             return;
         }
+        
+        if (cargs.printUsage()) {
+            printUsage();
+            return;
+        }
 
         if (cargs.getPort() > 0) {
             port = cargs.getPort();
