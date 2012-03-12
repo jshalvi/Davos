@@ -2,7 +2,12 @@ package com.shalvi.davos.http;
 
 import java.io.IOException;
 
-
+/**
+ * Reader to be used for writing to the socket's output stream.  Currently, streaming
+ * is not supported.  Use toString().
+ * @author jshalvi
+ *
+ */
 public class ResponseReader {
 
     private Response response;
@@ -15,6 +20,10 @@ public class ResponseReader {
         this.response = response;
     }
 
+    /**
+     * Returns the response text as a string.  This string may then be written
+     * to the socket's output stream.
+     */
     public String toString() {
         /*
          * TODO:  Not the best way to do this.  Need to figure out a way to stream this back

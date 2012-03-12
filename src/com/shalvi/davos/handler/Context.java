@@ -16,7 +16,7 @@ public class Context {
     private final Session session;
     private final Request request;
     private final Response response;
-    
+
     /**
      * Constructor
      * @param request
@@ -28,7 +28,7 @@ public class Context {
         this.response = response;
         this.session = session;
     }
-    
+
     /**
      * Gets the current request.
      * @return the request if available, otherwise null.
@@ -36,7 +36,7 @@ public class Context {
     public Request getRequest() {
         return request;
     }
-    
+
     /**
      * Gets the current response
      * @return the response if available, otherwise null.
@@ -44,18 +44,18 @@ public class Context {
     public Response getResponse() {
         return response;
     }
-    
+
     /**
      * Returns a copy of the session.
      * @return null if no session available, otherwise returns a copy of the session.
      */
     public Session getSession() {
         Session s = null;
-        
+
         if ( session != null) {
             s = new Session(session);
         }
-        
+
         return s;
     }
 }

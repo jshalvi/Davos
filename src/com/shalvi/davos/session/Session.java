@@ -4,6 +4,14 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Represents a unique session during the server instance.  Each session contains a
+ * unique ID, and contains a map of key/value String pairs which may be set during
+ * the course of handling a request.  If modified within a method, a copy of the session
+ * should be returned using the copy constructor. 
+ * @author jshalvi
+ *
+ */
 public class Session implements Serializable {
 
     private static final long serialVersionUID = 1L;

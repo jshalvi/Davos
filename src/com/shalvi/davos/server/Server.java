@@ -22,6 +22,13 @@ import com.shalvi.davos.session.Session;
 import com.shalvi.davos.session.SessionManager;
 import com.shalvi.davos.session.SessionStoreFullException;
 
+/**
+ * Main server classes.  Listens for requests on a specified port and responds according
+ * to various handlers registered to its dispatcher.  The server also manages sessions,
+ * passing them within a Context object to various handlers.
+ * @author jshalvi
+ *
+ */
 public class Server {
     private static int DEFAULT_PORT = 8888;
     private int port = DEFAULT_PORT;
@@ -46,6 +53,9 @@ public class Server {
         initializeDefaultHandlers();
     }
 
+    /**
+     * Initializes the default StaticFileHandler for this instance.
+     */
     private void initializeDefaultHandlers() {
         StaticFileRequestHandler staticFileHandler = new StaticFileRequestHandler();
         staticFileHandler.setRootDirectory(rootDirectory);

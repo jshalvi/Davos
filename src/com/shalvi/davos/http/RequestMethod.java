@@ -1,5 +1,10 @@
 package com.shalvi.davos.http;
 
+/**
+ * Enum of supported request methods.
+ * @author jshalvi
+ *
+ */
 public enum RequestMethod {
   GET ("GET"),
   HEAD ("HEAD"),

@@ -121,9 +121,9 @@ Mar 6, 2012
 Began work on postdata support.  Added necessary data structures, unit tests,
 and parsing method to grab a url-encoded postdata from the request body.
 
-03/08/2012 - Design:	0:00
-03/08/2012 - Coding:	2:00
-03/08/2012 - Bugs:		0:00
+03/06/2012 - Design:	0:00
+03/06/2012 - Coding:	2:00
+03/06/2012 - Bugs:		0:00
 
 Mar 7, 2012
 ================================================================================
@@ -134,69 +134,56 @@ determine the next parsing state.  Honestly I'm getting turned around
 completely in my own project!  After correcting this mistake, all my unit tests
 passed!
 
-03/08/2012 - Design:	1:00
-03/08/2012 - Coding:	1:00
-03/08/2012 - Bugs:		0:30
+03/07/2012 - Design:	1:00
+03/07/2012 - Coding:	1:00
+03/07/2012 - Bugs:		0:30
 
 Mar 8
-three hours of design
+================================================================================
+Spent the evening planning out the rest of the server design, mainly request
+dispatching, handling, and response building.
+
+
+03/08/2012 - Design:	3:00
+03/08/2012 - Coding:	0:00
+03/08/2012 - Bugs:		0:00
+
 
 Mar 10
-1pm - 1:30pm
-1 hr coding
-30 min bug (incorrect readline for postdata)
+================================================================================
+Built out POSTDATA parsing, refactored Request/Response to common Message
+parent.  Created new Server class.  Built-out toString() for Request/Response.
+Built out dispatching.
 
-1:30 - 4
-1 hr coding
-.5 hr design/research
-
-4:30
-7:00
-.5 hr bug
-2 hr coding
-
-1700
-2130
-
-estimated 2550
-
-7:30 to 9:30
-1:00 bugs
-1:00 coding
-Spent a lot of time debugging response building on the way out
-
-10:00 to 12:00
-1:00 bugs
-1:00 coding
-
-12:30am
-1368 non-test lines
-2351 lines total
-Coding:  6 hr coding
-Bugs:  3 hr bugs
-Design:  .5 research/design
-
-11:30am
-12:30am
-9.5/13 hours... 73% efficiency
-ideal:  100 minutes pomodoro work
-35 minutes pomodoro break
-74% ideal efficiency
-
+03/10/2012 - Design 	0:30
+03/10/2012 - Coding 	7:30
+03/10/2012 - Bugs:	 	3:00
 
 Mar 11
-12:30am - 2:00am
-1445 non-test lines
-2539 total
+================================================================================
+Refactored RequestHandler hierarchy to create an abstract class which will
+delegate reqeusts to method-specific handlers.  This allows multiple methods to
+be supported for the same URI.  Refactored RequestHandler again to utilize
+Contexts rather than just Request/Response pairs.  This permits sessions to be
+passed into a request.  Built out Sessions and Cookies.  The main Server got a
+bit messy from all the refactoring, but I'm happy I was able to implement
+Sessions and Cookies with minimal headaches.
 
-11:30 - 1:00
-designed request method handling
+03/11/2012 - Design 	2:00
+03/11/2012 - Coding 	6:30
+03/11/2012 - Bugs:	 	0:30
 
-1:30 - 3:30
-request method handling
+Weekly summary
+================================================================================
+Design:		 6:30
+Coding:		17:00
+Bugs:		 4:30
 
-1629 non-test
-2811 total
 
-3:45 4:30
-brain is fried, can't figure out where to put sessions
+Final summary
+================================================================================
+Design:		 9:30 (18%)
+Coding:		37:30 (70%)
+Bugs:		 6:30 (12%)
+
+Grand Total:	53:30

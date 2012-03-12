@@ -75,6 +75,10 @@ public class Request extends Message {
     }
 
 
+    /**
+     * Sets the validity of the request.
+     * @param v
+     */
     void setValid(boolean v) {
         valid = v;
     }

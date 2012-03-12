@@ -1,5 +1,10 @@
 package com.shalvi.davos.http;
 
+/**
+ * Enum containing supported response codes.
+ * @author jshalvi
+ *
+ */
 public enum ResponseCode {
   SUCCESSFUL_200 ("200", "OK"),
   CLIENT_ERROR_404 ("404", "Not found"),

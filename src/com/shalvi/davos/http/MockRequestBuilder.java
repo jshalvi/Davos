@@ -1,5 +1,11 @@
 package com.shalvi.davos.http;
 
+/**
+ * Builder used to create Request objects for testing purposes only.
+ * 
+ * @author jshalvi
+ *
+ */
 public class MockRequestBuilder {
 
   private Request request;
@@ -26,9 +32,6 @@ public class MockRequestBuilder {
       request.setPostdata(key, val);
   }
   
-  /**
-   * Creates a basic
-   */
   public void initializeDefaults() {
     setMethod(RequestMethod.GET);
     setRequestURI("/");

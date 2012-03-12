@@ -12,6 +12,15 @@ import com.shalvi.davos.http.ResponseBuilder;
 import com.shalvi.davos.http.ResponseCode;
 import com.shalvi.davos.session.Session;
 
+/**
+ * Fetches content located on the host filesystem specified by a Request's URI.  Files
+ * will be searched relative to the rootDirectory.  If a file is not found, the response
+ * code is set to 404 accordingly.  Currently, this handler does not fetch index.html if
+ * a directory alone is specified.
+ * 
+ * @author jshalvi
+ *
+ */
 public class StaticFileRequestHandler extends RequestMethodHandler {
     private File rootDirectory;
 
@@ -29,7 +38,7 @@ public class StaticFileRequestHandler extends RequestMethodHandler {
 
         File f = new File(rootDirectory.getAbsolutePath() + request.getRequestURI());
         ResponseBuilder builder = new ResponseBuilder();
-        
+
         if (context.getSession() != null) {
             Session session = context.getSession();
             builder.setCookie(Session.SESSION_KEY, "" + session.getId());
@@ -37,15 +46,15 @@ public class StaticFileRequestHandler extends RequestMethodHandler {
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(f));
-            
+
             /*
              * Right now I don't know of a good way to re-use this reader, creating
              * a second one just to calculate length.
              */
             BufferedReader reader2 = new BufferedReader(new FileReader(f));
-            
+
             int contentLength = determineContentLength(reader2);
-            
+
             if (contentLength > 0) {
                 builder.setResponseCode(ResponseCode.SUCCESSFUL_200);
                 builder.setReader(reader);
@@ -54,14 +63,14 @@ public class StaticFileRequestHandler extends RequestMethodHandler {
             } else {
                 response = ResponseBuilder.getDefault404Response();
             }
-            
+
         } catch (FileNotFoundException e) {
             response = ResponseBuilder.getDefault404Response();
         }
 
         return new Context(request, response, context.getSession());      
     }
-    
+
     @Override
     public Context doPost(Context context) {
         return doGet(context);
@@ -73,7 +82,7 @@ public class StaticFileRequestHandler extends RequestMethodHandler {
                 ResponseBuilder.getHeadersOnlyResponse(doGet(context).getResponse()),
                 context.getSession());
     }
-    
+
     int determineContentLength(BufferedReader reader) {
         int len = -1;
         char c = ' ';
@@ -88,7 +97,7 @@ public class StaticFileRequestHandler extends RequestMethodHandler {
             e.printStackTrace();
             len = -1;
         }
-        
+
         return len;
     }
 

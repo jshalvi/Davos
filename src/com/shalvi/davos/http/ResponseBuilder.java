@@ -3,6 +3,13 @@ package com.shalvi.davos.http;
 import java.io.BufferedReader;
 import java.io.StringReader;
 
+/**
+ * Builder for Response objects, as well as common responses such as 404 and 501
+ * errors.
+ * 
+ * @author jshalvi
+ *
+ */
 public class ResponseBuilder {
 
     private Response response;
@@ -73,13 +80,18 @@ public class ResponseBuilder {
         return r;
     }
     
+    /**
+     * Returns a copy of a response with its body stripped so only the headers remain.
+     * Generally used for HEAD requests.
+     * @param response
+     * @return
+     */
     public static Response getHeadersOnlyResponse(Response response) {
         if (response == null) {
             throw new IllegalArgumentException();
         }
         
         Response r = new Response(response);
-        r.headerFields.clear();
         r.setReader(null);
         
         return r;

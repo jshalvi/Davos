@@ -3,9 +3,7 @@ package com.shalvi.davos.handler;
 import java.util.EnumMap;
 import java.util.Map;
 
-import com.shalvi.davos.http.Request;
 import com.shalvi.davos.http.RequestMethod;
-import com.shalvi.davos.http.Response;
 import com.shalvi.davos.http.ResponseBuilder;
 
 /**

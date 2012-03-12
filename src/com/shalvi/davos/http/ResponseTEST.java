@@ -115,7 +115,6 @@ public class ResponseTEST extends TestCase {
         Response response2 = ResponseBuilder.getHeadersOnlyResponse(response);
 
         assertFalse(response == response2);
-        assertTrue(response2.getHeaderFields().isEmpty());
         assertTrue(response2.getReader() == null);
 
         try {

@@ -3,6 +3,13 @@ package com.shalvi.davos.http;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Abstract class to represent an HTTP message.  Contains properties common
+ * to both Request and Response.
+ * 
+ * @author jshalvi
+ *
+ */
 public abstract class Message {
     protected HTTPVersion version;
     

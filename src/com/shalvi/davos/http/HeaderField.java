@@ -1,5 +1,11 @@
 package com.shalvi.davos.http;
 
+/**
+ * Class to represent a message header field.  In HTTP a field is typically represented by:
+ * FieldName: FieldValue .  Only fields specified in the HeaderFieldName enum are supported.
+ * @author jshalvi
+ *
+ */
 public class HeaderField {
 
     private HeaderFieldName key;

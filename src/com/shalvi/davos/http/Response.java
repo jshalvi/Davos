@@ -2,6 +2,12 @@ package com.shalvi.davos.http;
 
 import java.io.BufferedReader;
 
+/**
+ * Represents an HTTP Response.  Although it conforms to the same structure as a
+ * Request, a Response almost always contains a body and has a different start-line.
+ * @author jshalvi
+ *
+ */
 public class Response extends Message {
 
     private ResponseCode code;
@@ -40,6 +46,12 @@ public class Response extends Message {
     public void setReader(BufferedReader reader) {
         this.reader = reader;
     }
+    
+    /**
+     * Gets the Reader which may be used to read the contents of the
+     * Response body.
+     * @return
+     */
     public BufferedReader getReader() {
         return reader;
     }
@@ -78,6 +90,10 @@ public class Response extends Message {
     }
 
 
+    /**
+     * Converts this response to a string representation.  Not to be used for actually
+     * serving response text.  Use ResponseReader.toString() instead.
+     */
     public String toString() {
         String out = "[" + version.toString() + " " +
         code.getStatusCode() + " " +

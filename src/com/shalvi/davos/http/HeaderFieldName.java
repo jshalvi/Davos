@@ -1,5 +1,11 @@
 package com.shalvi.davos.http;
 
+/**
+ * Enum containing supported header fields.
+ * 
+ * @author jshalvi
+ *
+ */
 public enum HeaderFieldName {
     HOST ("Host"),
     USER_AGENT ("User-Agent"),

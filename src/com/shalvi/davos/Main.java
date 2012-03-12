@@ -22,7 +22,7 @@ public class Main {
             printUsage();
             return;
         }
-        
+
         if (cargs.printUsage()) {
             printUsage();
             return;
