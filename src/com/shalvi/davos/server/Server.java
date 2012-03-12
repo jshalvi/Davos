@@ -24,10 +24,18 @@ public class Server {
     private String rootDirectory = ".";
     private RequestDispatcher dispatcher = new RequestDispatcher();
 
+    /**
+     * Constructor.
+     */
     public Server() {
         initializeDefaultHandlers();
     }
-    
+
+    /**
+     * Constructor
+     * @param port on which the server should listen.
+     * @param rootDirectory for static files.
+     */
     public Server(int port, String rootDirectory) {
         setPort(port);
         setRootDirectory(rootDirectory);
@@ -39,11 +47,41 @@ public class Server {
         staticFileHandler.setRootDirectory(rootDirectory);
         dispatcher.addHandler(".*", staticFileHandler);
     }
-    
+
+    /**
+     * Registers a request handler to a URI pattern.  Patterns are checked in the order in which
+     * they were added, with older patterns taking priority over newly added patterns.
+     * @param pattern to be used as a regex pattern against request URI's.
+     * @param handler to be executed.
+     */
+    public void addHandler(String pattern, RequestHandler handler) {
+        dispatcher.addHandler(pattern, handler);
+    }
+
+    /**
+     * Registers a request handler to multiple URI patterns.  This is a convenience method to 
+     * use a single handler for multiple patterns.  Patterns are checked in the order in which
+     * they were added, with older patterns taking priority over newly added patterns.
+
+     * @param patterns to be used as regex patterns against request URI's.
+     * @param handler to be executed.
+     */
+    public void addHandler(String[] patterns, RequestHandler handler) {
+        dispatcher.addHandler(patterns, handler);
+    }
+
+    /**
+     * Sets the port on which the server should listen.
+     * @param port
+     */
     public void setPort(int port) {
         this.port = port;
     }
 
+    /**
+     * Sets the root directory to use for serving static files.
+     * @param rootDirectory
+     */
     public void setRootDirectory(String rootDirectory) {
         this.rootDirectory = rootDirectory;
     }
@@ -52,6 +90,9 @@ public class Server {
         System.out.println(s);
     }
 
+    /**
+     * Starts the server.
+     */
     public void run() {
         RequestReader reader;
         PrintWriter writer;
@@ -83,7 +124,7 @@ public class Server {
                     } catch (NoHandlerFoundException e) {
                         response = ResponseBuilder.getDefault404Response();
                     }
-                    
+
                 } else {
                     /*
                      * TODO: check to see if a more appropriate "Invalid request" 
@@ -91,10 +132,9 @@ public class Server {
                      */
                     response = ResponseBuilder.getDefault404Response();
                 }
-                
+
                 ResponseReader responseReader = new ResponseReader(response);
                 String responseText = responseReader.toString();
-                // System.out.println(responseText);
                 writer.print(responseText);
 
                 writer.flush();

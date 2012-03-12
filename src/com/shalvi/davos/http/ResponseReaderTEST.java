@@ -15,15 +15,11 @@ public class ResponseReaderTEST extends TestCase {
             Assert.fail();
         } catch (IllegalArgumentException e) {}
         
-        String line, out = "";
+        String out = "";
         
         reader = new ResponseReader(response);
         out = reader.toString();
-        /*
-        while((line = reader.readLine()) != null) {
-            out += line;
-        }
-        */
+
         assertEquals(
                 "HTTP/1.1 200 OK" + CRLF +
                 "Content-Length: " + ResponseBuilder.MOCK_200_RESPONSE_TEXT.length() + CRLF +

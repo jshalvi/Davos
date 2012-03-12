@@ -114,7 +114,7 @@ Release 3
 
 Final release
 
-	Refactor readLine
+	x Refactor readLine
 	Add --help [usage]
 
 
@@ -124,18 +124,21 @@ Extra
 	Set cookies in response
 	The server shall support cookies
 
+	The server shall support cookie-based sessions
 
 	Build session manager
 		cache
 		getSession(id)
 		storeSession()
 
-		shutdown // write all sessions to disk
-		initSessionStore
+Extra++
 
 
-	The server shall support cookie-based sessions
-		serializable sessions (?)
+	shutdown // write all sessions to disk
+	initSessionStore
+
+
+	serializable sessions (?)
 
 	The server shall support basic authentication
 
