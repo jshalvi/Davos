@@ -82,6 +82,13 @@ public class SessionTEST extends TestCase {
         
         assertNull(session1.getData("missingKey"));
     }
+    
+    public void testInvalidSessionCreation() {
+        try {
+            new Session(-1);
+            Assert.fail();
+        } catch (IllegalArgumentException e) {}        
+    }
 
     public void testHashCode() {
         assertEquals(session1.hashCode(), session1b.hashCode());
@@ -107,5 +114,11 @@ public class SessionTEST extends TestCase {
     
     public void testToString() {
         assertEquals("[Session id: 1, testkey=testval]", session1.toString());
+    }
+    
+    public void testCopyConstructor() {
+        Session copy = new Session(session1);
+        assertFalse(copy == session1);
+        assertTrue(copy.equals(session1));
     }
 }

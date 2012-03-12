@@ -14,8 +14,31 @@ public class Session implements Serializable {
     private boolean validKey(String key) {
         return !(key == null || key == "");
     }
+    
+    /**
+     * Constructor.
+     * @param id of the session, must be zero or greater
+     * @throws IllegalArgumentException if id < 0
+     */
     public Session(int id) {
+        if (id < 0) {
+            throw new IllegalArgumentException();
+        }
         this.id = id;
+    }
+    
+    /** 
+     * Copy constructor.
+     * @param session
+     * @throws IllegalArgumentException if session is null
+     */
+    public Session(Session session) {
+        if (session == null) {
+            throw new IllegalArgumentException();
+        }
+        
+        id = session.id;
+        data = new HashMap<String, String>(session.data);
     }
 
     public int getId() {
