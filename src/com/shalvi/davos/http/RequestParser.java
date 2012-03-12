@@ -1,20 +1,17 @@
 package com.shalvi.davos.http;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import sun.tools.tree.PostDecExpression;
 
-import com.sun.xml.internal.ws.transport.http.HttpMetadataPublisher;
 
 enum ParserState {
   START_LINE() {
-    public Request parse(BufferedReader reader, Request request) {
+    public Request parse(RequestReader reader, Request request) {
       Request r = new Request(request);
       Request rParsed;
-      String requestLine = RequestParser.readLine(reader);
+      String requestLine = reader.readLine();
       
       rParsed = RequestParser.parseRequestLine(requestLine);
       r.setMethod(rParsed.getMethod());
@@ -34,9 +31,9 @@ enum ParserState {
     }
   },
   REQUEST_HEADERS() {
-    public Request parse(BufferedReader reader, Request request) {
+    public Request parse(RequestReader reader, Request request) {
       Request r = new Request(request);
-      String line = RequestParser.readLine(reader);
+      String line = reader.readLine();
       HeaderField field;
       
       if (line == null) {
@@ -58,7 +55,7 @@ enum ParserState {
               r.setHeaderField(RequestParser.parseHeaderField(line));
           }
           
-          line = RequestParser.readLine(reader);
+          line = reader.readLine();
         }
       }
       return r;
@@ -73,7 +70,7 @@ enum ParserState {
     }
   },
   REQUEST_POSTDATA() {
-    public Request parse(BufferedReader reader, Request request) {
+    public Request parse(RequestReader reader, Request request) {
         Request r = new Request(request);
         Map<String, String> postData;
 
@@ -114,7 +111,7 @@ enum ParserState {
     
   },
   END() {
-    public Request parse(BufferedReader reader, Request request) {
+    public Request parse(RequestReader reader, Request request) {
       Request r = new Request(request);
       return r;
     }
@@ -124,7 +121,7 @@ enum ParserState {
     }
   };
   
-  public abstract Request parse(BufferedReader reader, Request request);
+  public abstract Request parse(RequestReader reader, Request request);
   public abstract ParserState getNext(Request request);
 }
 
@@ -140,49 +137,6 @@ public class RequestParser {
 
   }
   
-  static String readLine(BufferedReader reader) {
-    char currentChar;
-    char prevChar = '\0';
-    // boolean isEmptyLine = true;
-    String out = "";
-    
-    if (reader == null) {
-      throw new IllegalArgumentException("BufferedReader must not be null");
-    }
-    
-    try {
-      
-      while (true) {
-        currentChar = (char) reader.read();
-        
-        if (currentChar == (char) -1) {
-          if (prevChar == '\0') {
-            return null;
-          } else {
-            break;
-          }
-        }
-        
-        if (prevChar == '\r' && currentChar == '\n') {
-          if (prevChar == '\0') {
-            return null;
-          } else {
-            break;
-          }
-        }
-        
-        if (currentChar != '\n' && currentChar != '\r') {
-
-          out += currentChar;
-        }
-        prevChar = currentChar;
-      }
-      
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    return out;
-  }
   static RequestMethod parseMethod(String requestLine) {
     RequestMethod method = RequestMethod.UNSUPPORTED;
     String[] tokens;
@@ -330,7 +284,7 @@ public class RequestParser {
       return param;
   }
   
-  public static Request parseRequest(BufferedReader reader) {
+  public static Request parseRequest(RequestReader reader) {
     Request r = new Request();
     ParserState state = ParserState.START_LINE;
     

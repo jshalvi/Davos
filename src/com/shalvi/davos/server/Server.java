@@ -13,6 +13,7 @@ import com.shalvi.davos.handler.RequestHandler;
 import com.shalvi.davos.handler.StaticFileRequestHandler;
 import com.shalvi.davos.http.Request;
 import com.shalvi.davos.http.RequestParser;
+import com.shalvi.davos.http.RequestReader;
 import com.shalvi.davos.http.Response;
 import com.shalvi.davos.http.ResponseBuilder;
 import com.shalvi.davos.http.ResponseReader;
@@ -52,7 +53,7 @@ public class Server {
     }
 
     public void run() {
-        BufferedReader reader;
+        RequestReader reader;
         PrintWriter writer;
         RequestHandler handler;
         Request request;
@@ -68,7 +69,8 @@ public class Server {
                 Socket socket = serverSocket.accept();
 
                 writer = new PrintWriter(socket.getOutputStream());
-                reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                reader = new RequestReader(
+                        new BufferedReader(new InputStreamReader(socket.getInputStream())));
 
                 request = RequestParser.parseRequest(reader);
                 log(request.toString());

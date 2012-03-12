@@ -119,84 +119,69 @@ public class RequestParserTEST extends TestCase {
     Assert.assertEquals(HTTPVersion.UNSUPPORTED, r.getHTTPVersion());
   }
   
-  public void testReadLine() {
-    
-    String LINE1 = "GET /pub/WWW/TheProject.html HTTP/1.1",
-        SEPARATOR = "\r\n",
-        LINE2 = "test";
-    
-    // test line with \r or \n alone
-    
-    BufferedReader reader = new BufferedReader(new StringReader(LINE1 + SEPARATOR + LINE2));
-    Assert.assertEquals(LINE1, RequestParser.readLine(reader));
-    Assert.assertEquals(LINE2, RequestParser.readLine(reader));
-    Assert.assertNull(RequestParser.readLine(reader));
-    
-    reader = new BufferedReader(new StringReader(SEPARATOR));
-    Assert.assertEquals("", RequestParser.readLine(reader));
-    Assert.assertNull(RequestParser.readLine(reader));
-    
-    reader = new BufferedReader(new StringReader(""));
-    Assert.assertNull(RequestParser.readLine(reader));
-    
-    try {
-      RequestParser.readLine(null);
-      Assert.fail();
-    } catch (IllegalArgumentException e) {}
-  }
-  
   public void testParseRequest() {
-    BufferedReader reader;
+    RequestReader reader;
     Request request;
     
     // Test valid requests
-    reader = new BufferedReader(new StringReader(RL_VALID_GET + CRLF + CRLF));
+    reader = new RequestReader(
+        new BufferedReader(new StringReader(RL_VALID_GET + CRLF + CRLF)));
     request = RequestParser.parseRequest(reader);
     Assert.assertTrue(request.isValid());
     Assert.assertEquals(RequestMethod.GET, request.getMethod());
 
-    reader = new BufferedReader(new StringReader(
+    reader = new RequestReader(
+            new BufferedReader(new StringReader(
         RL_VALID_GET + CRLF + 
         HEADER_LINE + CRLF +
-        CRLF));
+        CRLF)));
+    
     request = RequestParser.parseRequest(reader);
     Assert.assertTrue(request.isValid());
     Assert.assertEquals(RequestMethod.GET, request.getMethod());
 
-    reader = new BufferedReader(new StringReader(RL_VALID_HEAD + CRLF + CRLF));
+    reader = new RequestReader(
+            new BufferedReader(new StringReader(RL_VALID_HEAD + CRLF + CRLF)));
     request = RequestParser.parseRequest(reader);
     Assert.assertTrue(request.isValid());
     Assert.assertEquals(RequestMethod.HEAD, request.getMethod());
 
-    reader = new BufferedReader(new StringReader(RL_VALID_DELETE + CRLF + CRLF));
+    reader = new RequestReader(
+            new BufferedReader(new StringReader(RL_VALID_DELETE + CRLF + CRLF)));
     request = RequestParser.parseRequest(reader);
     Assert.assertTrue(request.isValid());
     Assert.assertEquals(RequestMethod.DELETE, request.getMethod());
 
-    reader = new BufferedReader(new StringReader(RL_VALID_POST + CRLF + CRLF));
+    reader = new RequestReader(
+            new BufferedReader(new StringReader(RL_VALID_POST + CRLF + CRLF)));
     request = RequestParser.parseRequest(reader);
     Assert.assertTrue(request.isValid());
     Assert.assertEquals(RequestMethod.POST, request.getMethod());
 
     // Test bad request lines
-    reader = new BufferedReader(new StringReader(RL_BAD_METHOD + CRLF + CRLF));
+    reader = new RequestReader(
+            new BufferedReader(new StringReader(RL_BAD_METHOD + CRLF + CRLF)));
     request = RequestParser.parseRequest(reader);
     Assert.assertFalse(request.isValid());
 
-    reader = new BufferedReader(new StringReader(RL_MISSING_METHOD + CRLF + CRLF));
+    reader = new RequestReader(
+            new BufferedReader(new StringReader(RL_MISSING_METHOD + CRLF + CRLF)));
     request = RequestParser.parseRequest(reader);
     Assert.assertFalse(request.isValid());
 
-    reader = new BufferedReader(new StringReader(RL_BAD_HTTP_VERSION + CRLF + CRLF));
+    reader = new RequestReader(
+            new BufferedReader(new StringReader(RL_BAD_HTTP_VERSION + CRLF + CRLF)));
     request = RequestParser.parseRequest(reader);
     Assert.assertFalse(request.isValid());
 
-    reader = new BufferedReader(new StringReader(RL_MISSING_HTTP_VERSION + CRLF + CRLF));
+    reader = new RequestReader(
+            new BufferedReader(new StringReader(RL_MISSING_HTTP_VERSION + CRLF + CRLF)));
     request = RequestParser.parseRequest(reader);
     Assert.assertFalse(request.isValid());
 
     // Test incomplete request
-    reader = new BufferedReader(new StringReader(RL_VALID_HEAD));
+    reader = new RequestReader(
+            new BufferedReader(new StringReader(RL_VALID_HEAD)));
     request = RequestParser.parseRequest(reader);
     Assert.assertFalse(request.isValid());
   }
@@ -292,7 +277,8 @@ public class RequestParserTEST extends TestCase {
   }
   
   private Request parseRequestText(String requestText) {
-      BufferedReader reader = new BufferedReader(new StringReader(requestText));
+      RequestReader reader = new RequestReader(
+              new BufferedReader(new StringReader(requestText)));
       return RequestParser.parseRequest(reader);
   }
   
