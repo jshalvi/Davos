@@ -11,11 +11,11 @@ import com.shalvi.davos.handler.NoHandlerFoundException;
 import com.shalvi.davos.handler.RequestDispatcher;
 import com.shalvi.davos.handler.RequestHandler;
 import com.shalvi.davos.handler.StaticFileRequestHandler;
-import com.shalvi.davos.handler.http.ResponseReader;
 import com.shalvi.davos.http.Request;
 import com.shalvi.davos.http.RequestParser;
 import com.shalvi.davos.http.Response;
 import com.shalvi.davos.http.ResponseBuilder;
+import com.shalvi.davos.http.ResponseReader;
 
 public class Server {
     private static int DEFAULT_PORT = 8888;

@@ -1,6 +1,5 @@
 package com.shalvi.davos.http;
 
-import com.shalvi.davos.handler.http.ResponseReader;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;

@@ -25,7 +25,6 @@ public class Request extends Message {
     public Request() {
         method = RequestMethod.UNSUPPORTED;
         uri = "";
-        version = HTTPVersion.UNSUPPORTED;
         valid = false;
     }
 

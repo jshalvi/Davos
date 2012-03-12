@@ -12,7 +12,9 @@ public abstract class Message {
     /**
      * Standard constructor.
      */
-    Message() {}
+    Message() {
+        version = HTTPVersion.UNSUPPORTED;
+    }
     
     /**
      * Copy constructor.

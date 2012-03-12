@@ -5,7 +5,8 @@ Patterns used:
 	State used in parsing
 	Factory used in parsing
 	Builder used in response
-	Proxy/Strategy used in dispatcher
+	Command used in dispatcher
+	Decorator to be used in reading
 
 	discussed so far:
 		x Factory
@@ -101,19 +102,28 @@ Release 3
 
 	x specify htdocs at run-time
 
-	The server shall support the following HTTP 1.1 requests: GET, POST, HEAD, and DELETE
+	x The server shall support the following HTTP 1.1 requests: GET, POST, HEAD, and DELETE
 		x GET requests will return the desired resource
 		x POST requests will return the desired resource, with POST data logged in the console
 		x HEAD requests will return headers and be logged to the console
 		x DELETE requests will have no effect, but will be logged to the console
 
+	x Build session
+		id
+		Map
+
+Final release
+
+	Refactor readLine
+	Add --help [usage]
+
+
+Extra
+
 	Build cookie parsing
 	Set cookies in response
 	The server shall support cookies
 
---> Build session
-		id
-		Map
 
 	Build session manager
 		cache
@@ -129,6 +139,8 @@ Release 3
 
 	The server shall support basic authentication
 
+	set name with form
+	times accessed
 
 
 Release 4
