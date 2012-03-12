@@ -60,6 +60,23 @@ public class Response extends Message {
     public int getContentLength() {
         return contentLength;
     }
+    
+    /**
+     * Adds a cookie to the cookie map, and sets the header accordingly.  NOTE at the moment
+     * only one cookie is supported at a time.
+     * @param key
+     * @param val
+     * @throws IllegalArgumentException if key or val are empty or null
+     */
+    public void setCookie(String key, String val) {
+        if (key == null || key.length() == 0 ||
+                val == null || val.length() == 0) {
+            throw new IllegalArgumentException();
+        }
+        setHeaderField(new HeaderField(HeaderFieldName.SET_COOKIE, key + "=" + val + ";"));
+        cookies.put(key, val);
+    }
+
 
     public String toString() {
         String out = "[" + version.toString() + " " +

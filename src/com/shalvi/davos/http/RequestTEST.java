@@ -179,4 +179,14 @@ public class RequestTEST extends TestCase {
         assertEquals("[POST /test.html HTTP/1.1]\n" + HEADERS + POSTDATA,
             builder.toNewRequest().toString());
     }
+    
+    public void testGetCookie() {
+        MockRequestBuilder builder = new MockRequestBuilder();
+        builder.initializeDefaults();
+        builder.setHeaderField(new HeaderField(HeaderFieldName.COOKIE, "key=val;"));
+        Request r = builder.toNewRequest();
+        assertTrue(r.cookies.containsKey("key"));
+        assertEquals("val", r.cookies.get("key"));
+    }
+    
 }

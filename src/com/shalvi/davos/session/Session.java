@@ -10,6 +10,8 @@ public class Session implements Serializable {
     private Map<String, String> data = new HashMap<String, String>();
     private final int id;
     private volatile int hashCode;
+    
+    public static String SESSION_KEY = "davossession";
 
     private boolean validKey(String key) {
         return !(key == null || key == "");

@@ -5,9 +5,12 @@ import java.util.Map;
 
 public abstract class Message {
     protected HTTPVersion version;
+    
     protected Map<HeaderFieldName,HeaderField> headerFields = 
         new HashMap<HeaderFieldName, HeaderField>();
 
+    protected Map<String, String> cookies = 
+        new HashMap<String, String>();
 
     /**
      * Standard constructor.
@@ -28,6 +31,7 @@ public abstract class Message {
 
         version = message.version;
         headerFields = message.getHeaderFields();
+        cookies = new HashMap<String, String>(message.cookies);
     }
 
     /**
@@ -56,6 +60,15 @@ public abstract class Message {
                 field.getKey() == HeaderFieldName.UNSPECIFIED || 
                 field.getKey() == HeaderFieldName.UNSUPPORTED) {
             throw new IllegalArgumentException();
+        }
+        
+        if (field.getKey() == HeaderFieldName.COOKIE) {
+            String[] cookieFields = field.getValue().split("=");
+            
+            
+            if (cookieFields.length == 2) {
+                cookies.put(cookieFields[0], cookieFields[1].replace(';', ' ').trim());
+            }
         }
 
         headerFields.put(field.getKey(), field);
@@ -109,8 +122,23 @@ public abstract class Message {
         Message that = (Message) thatObject;
         
         return version == that.getHTTPVersion() &&
-            headerFields.equals(that.headerFields);
+            headerFields.equals(that.headerFields) &&
+            cookies.equals(that.cookies);
     }
-
+    
+    /**
+     * Retrieves a cookie value.
+     * @param key
+     * @return the desired value, or null if not available
+     * @throws IllegalArgumentException if key is empty or null
+     */
+    public String getCookie(String key) {
+        if (key == null || key.length() == 0) {
+            throw new IllegalArgumentException();
+        }
+        
+        return cookies.get(key);
+    }
+    
     public abstract String toString();
 }

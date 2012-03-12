@@ -5,6 +5,8 @@ public enum HeaderFieldName {
     USER_AGENT ("User-Agent"),
     CONTENT_LENGTH ("Content-Length"),
     CONTENT_TYPE ("Content-Type"),
+    COOKIE ("Cookie"),
+    SET_COOKIE ("Set-Cookie"),
     UNSUPPORTED (""),
     UNSPECIFIED ("");
     

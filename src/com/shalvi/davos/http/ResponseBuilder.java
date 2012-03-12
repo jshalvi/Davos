@@ -35,6 +35,9 @@ public class ResponseBuilder {
     public void setContentLength(int length) {
         response.setContentLength(length);
     }
+    public void setCookie(String key, String val) {
+        response.setCookie(key, val);
+    }
     public static Response getDefault404Response() {
         Response r = new Response();
         r.setHeaderField(new HeaderField(HeaderFieldName.CONTENT_TYPE, "text/html"));

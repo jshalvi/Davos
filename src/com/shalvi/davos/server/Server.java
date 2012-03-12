@@ -18,6 +18,9 @@ import com.shalvi.davos.http.RequestReader;
 import com.shalvi.davos.http.Response;
 import com.shalvi.davos.http.ResponseBuilder;
 import com.shalvi.davos.http.ResponseReader;
+import com.shalvi.davos.session.Session;
+import com.shalvi.davos.session.SessionManager;
+import com.shalvi.davos.session.SessionStoreFullException;
 
 public class Server {
     private static int DEFAULT_PORT = 8888;
@@ -100,6 +103,8 @@ public class Server {
         RequestHandler handler;
         Request request;
         Response response;
+        Session session;
+        SessionManager sessionManager = new SessionManager();
 
         log("Starting on port " + port + "...");
 
@@ -115,13 +120,29 @@ public class Server {
                         new BufferedReader(new InputStreamReader(socket.getInputStream())));
 
                 request = RequestParser.parseRequest(reader);
+
+                String sessionIdStr = request.getCookie(Session.SESSION_KEY);
+                session = null;
+                try {
+                    if (sessionIdStr != null && sessionIdStr.length() > 0) {
+                        int sessionId = Integer.parseInt(sessionIdStr);
+                        session = sessionManager.getSession(sessionId);
+                        session = session == null ? sessionManager.newSession() : session;
+                    }
+                    if (sessionIdStr == null) {
+                        session = sessionManager.newSession();
+                    }
+                } catch (SessionStoreFullException e) {
+                    log("WARNING:  Session store is full.  No new sessions will be created");
+                }
+
                 log(request.toString());
 
                 if (request.isValid()) {
 
                     try {
                         handler = dispatcher.dispatch(request.getRequestURI());
-                        response = handler.execute(new Context(request, null, null)).getResponse();
+                        response = handler.execute(new Context(request, null, session)).getResponse();
                     } catch (NoHandlerFoundException e) {
                         response = ResponseBuilder.getDefault404Response();
                     }

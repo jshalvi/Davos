@@ -10,6 +10,7 @@ import com.shalvi.davos.http.Request;
 import com.shalvi.davos.http.Response;
 import com.shalvi.davos.http.ResponseBuilder;
 import com.shalvi.davos.http.ResponseCode;
+import com.shalvi.davos.session.Session;
 
 public class StaticFileRequestHandler extends RequestMethodHandler {
     private File rootDirectory;
@@ -28,6 +29,11 @@ public class StaticFileRequestHandler extends RequestMethodHandler {
 
         File f = new File(rootDirectory.getAbsolutePath() + request.getRequestURI());
         ResponseBuilder builder = new ResponseBuilder();
+        
+        if (context.getSession() != null) {
+            Session session = context.getSession();
+            builder.setCookie(Session.SESSION_KEY, "" + session.getId());
+        }
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(f));
