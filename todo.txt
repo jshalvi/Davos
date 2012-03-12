@@ -115,21 +115,23 @@ Release 3
 Final release
 
 	x Refactor readLine
-	Add --help [usage]
+	x Add --help [usage]
 
 
 Extra
 
-	Build cookie parsing
-	Set cookies in response
-	The server shall support cookies
+	x Convert to context request handling
 
-	The server shall support cookie-based sessions
+	x Build cookie parsing
+	x Set cookies in response
+	x The server shall support cookies
 
-	Build session manager
-		cache
-		getSession(id)
-		storeSession()
+	x The server shall support cookie-based sessions
+
+	x Build session manager
+		x cache
+		x getSession(id)
+		x storeSession()
 
 Extra++
 
@@ -161,3 +163,79 @@ Optional (MVC web framework):
 	The server shall support configurable URL dispatching to client controllers
 	The server shall support client controllers
 	The server shall support processing of Mustache templates for views
+
+
+Random notes:
+===
+
+ContextFactory.newContext(request, session) // server wants this
+ContextFactory.newContext(request, session, response) // handler wants this
+
+x Context
+	request
+	response
+	session
+
+
+	setHandler
+	setRequest
+
+	setSession
+	getSession
+		returns a copy, always
+
+
+Executor
+// this idea is just to properly use the state pattern if possible to encapsulate
+// the context and executor together.
+	execute(context)
+
+
+Handler
+	Context execute(context)
+
+ExecutorFactor.newExecutor
+
+BobHandler {
+	execute(Context) {
+		// mutate session
+		// set a response
+	}
+
+How to make cookies:
+	add Cookies to header
+	add cookie parsing to request
+		Cookie: key=val;
+	add cookie construction to response 
+		Set-Cookie: key=val;
+	for now, we just want to store a session id
+
+junit.framework.AssertionFailedError: expected:
+<Set-Cookie: testkey=testval;>
+<Set-Cookie: testkey=testval;>
+	at junit.framework.Assert.fail(Assert.java:50)
+	at junit.framework.Assert.failNotEquals(Assert.java:287)
+	at junit.framework.Assert.assertEquals(Assert.java:67)
+	at junit.framework.Assert.assertEquals(Assert.java:74)
+	at com.shalvi.davos.http.ResponseTEST.testSetCookie(ResponseTEST.java:137)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:243)
+	at junit.framework.TestSuite.run(TestSuite.java:238)
+	at org.junit.internal.runners.JUnit38ClassRunner.run(JUnit38ClassRunner.java:83)
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:49)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+	
