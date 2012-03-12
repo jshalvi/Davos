@@ -20,16 +20,17 @@ public class RequestHandlerTEST extends TestCase {
         builder.initializeDefaults();
         builder.setValid(false);
         request = builder.toNewRequest();
-
+        Context cin = new Context(request, null, null);
+        Context cout;
         // Null request
         try {
-            response = handler.execute(null);
+            cout = handler.execute(null);
             Assert.fail();
         } catch (IllegalArgumentException e ) {}
 
         // Invalid request
         try {
-            response = handler.execute(request);
+            cout = handler.execute(cin);
             Assert.fail();
         } catch (IllegalArgumentException e ) {}
     }

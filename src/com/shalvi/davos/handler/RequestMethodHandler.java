@@ -23,63 +23,66 @@ abstract class RequestMethodHandler implements RequestHandler {
 
     static {
         methodMap.put(RequestMethod.GET, new MethodHandler() {
-            public Response doMethod(Request request, RequestMethodHandler handler) {
-                return handler.doGet(request);
+            public Context doMethod(Context context, RequestMethodHandler handler) {
+                return handler.doGet(context);
             }
-         });
-         
+        });
+
         methodMap.put(RequestMethod.POST, new MethodHandler() {
-            public Response doMethod(Request request, RequestMethodHandler handler) {
-                return handler.doPost(request);
+            public Context doMethod(Context context, RequestMethodHandler handler) {
+                return handler.doPost(context);
             }
-         });
-         
+        });
+
         methodMap.put(RequestMethod.HEAD, new MethodHandler() {
-            public Response doMethod(Request request, RequestMethodHandler handler) {
-                return handler.doHead(request);
+            public Context doMethod(Context context, RequestMethodHandler handler) {
+                return handler.doHead(context);
             }
-         });
-         
+        });
+
         methodMap.put(RequestMethod.DELETE, new MethodHandler() {
-            public Response doMethod(Request request, RequestMethodHandler handler) {
-                return handler.doDelete(request);
+            public Context doMethod(Context context, RequestMethodHandler handler) {
+                return handler.doDelete(context);
             }
-         });
-         
+        });
+
         methodMap.put(RequestMethod.UNSUPPORTED, new MethodHandler() {
-            public Response doMethod(Request request, RequestMethodHandler handler) {
-                return handler.doUnsupported(request);
+            public Context doMethod(Context context, RequestMethodHandler handler) {
+                return handler.doUnsupported(context);
             }
-         });
+        });
     }
 
     @Override
-    public Response execute(Request request) {
-        
-        if (request == null) {
+    public Context execute(Context context) {
+
+        if (context == null) {
             throw new IllegalArgumentException();
         }
-        
-        MethodHandler handler = methodMap.get(request.getMethod());
 
-        return handler.doMethod(request, this);
-    }
-    
+        MethodHandler handler = methodMap.get(context.getRequest().getMethod());
 
-    public Response doGet(Request request) {
-        return doUnsupported(request);
+        return handler.doMethod(context, this);
     }
-    public Response doPost(Request request) {
-        return doUnsupported(request);
+
+
+    public Context doGet(Context context) {
+        return doUnsupported(context);
     }
-    public Response doHead(Request request) {
-        return doUnsupported(request);
+    public Context doPost(Context context) {
+        return doUnsupported(context);
     }
-    public Response doDelete(Request request) {
-        return doUnsupported(request);
+    public Context doHead(Context context) {
+        return doUnsupported(context);
     }
-    public Response doUnsupported(Request request) {
-        return ResponseBuilder.getDefault501Response();
+    public Context doDelete(Context context) {
+        return doUnsupported(context);
+    }
+    public Context doUnsupported(Context context) {
+        Context cout = new Context(context.getRequest(),
+                ResponseBuilder.getDefault501Response(),
+                context.getSession());
+        return cout;
     }
 }
 
@@ -89,5 +92,5 @@ abstract class RequestMethodHandler implements RequestHandler {
  *
  */
 interface MethodHandler {
-    public Response doMethod(Request request, RequestMethodHandler handler);
+    public Context doMethod(Context context, RequestMethodHandler handler);
 }

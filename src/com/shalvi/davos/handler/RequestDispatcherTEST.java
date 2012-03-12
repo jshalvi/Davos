@@ -2,7 +2,6 @@ package com.shalvi.davos.handler;
 
 import org.junit.Before;
 
-import com.shalvi.davos.http.Request;
 import com.shalvi.davos.http.Response;
 
 import junit.framework.Assert;
@@ -12,14 +11,14 @@ public class RequestDispatcherTEST extends TestCase {
     
     RequestDispatcher dispatcher;
     RequestHandler handler1 = new RequestHandler() {
-        public Response execute(Request request) {
-            return new Response();
+        public Context execute(Context context) {
+            return new Context(context.getRequest(), new Response(), context.getSession());
         }
     };
     
     RequestHandler handler2 = new RequestHandler() {
-        public Response execute(Request request) {
-            return new Response();
+        public Context execute(Context context) {
+            return new Context(context.getRequest(), new Response(), context.getSession());
         }
     };
     

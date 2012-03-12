@@ -20,7 +20,7 @@ public class RequestMethodHandlerTEST extends TestCase {
             builder.setMethod(m);
             Request r = builder.toNewRequest();
             
-            Response response = handler.execute(r);
+            Response response = handler.execute(new Context(r, null, null)).getResponse();
             assertEquals(ResponseCode.SERVER_ERROR_501.toString(), response.getResponseCode().toString());
         }
     }    

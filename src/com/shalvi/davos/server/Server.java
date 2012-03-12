@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import com.shalvi.davos.handler.Context;
 import com.shalvi.davos.handler.NoHandlerFoundException;
 import com.shalvi.davos.handler.RequestDispatcher;
 import com.shalvi.davos.handler.RequestHandler;
@@ -120,7 +121,7 @@ public class Server {
 
                     try {
                         handler = dispatcher.dispatch(request.getRequestURI());
-                        response = handler.execute(request);
+                        response = handler.execute(new Context(request, null, null)).getResponse();
                     } catch (NoHandlerFoundException e) {
                         response = ResponseBuilder.getDefault404Response();
                     }

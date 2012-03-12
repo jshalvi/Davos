@@ -15,9 +15,9 @@ public class StaticFileRequestHandler extends RequestMethodHandler {
     private File rootDirectory;
 
     @Override
-    public Response doGet(Request request) {
+    public Context doGet(Context context) {
         Response response;
-
+        Request request = context.getRequest();
         if (request == null) {
             throw new IllegalArgumentException("Null request object");
         }
@@ -53,17 +53,19 @@ public class StaticFileRequestHandler extends RequestMethodHandler {
             response = ResponseBuilder.getDefault404Response();
         }
 
-        return response;      
+        return new Context(request, response, context.getSession());      
     }
     
     @Override
-    public Response doPost(Request request) {
-        return doGet(request);
+    public Context doPost(Context context) {
+        return doGet(context);
     }
 
     @Override
-    public Response doHead(Request request) {
-        return ResponseBuilder.getHeadersOnlyResponse(doGet(request));
+    public Context doHead(Context context) {
+        return new Context(context.getRequest(),
+                ResponseBuilder.getHeadersOnlyResponse(doGet(context).getResponse()),
+                context.getSession());
     }
     
     int determineContentLength(BufferedReader reader) {
